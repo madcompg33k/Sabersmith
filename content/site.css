@@ -1,0 +1,901 @@
+﻿html, body {
+    margin: 0;
+    padding: 0;
+    background-color: #111;
+}
+
+body {
+    color: #fff;
+    font-size: .85em;
+    font-family: "Segoe UI", Verdana, Helvetica, Sans-Serif;
+}
+
+a {
+    color: #c93;
+    outline: none none;
+    text-decoration: none;
+}
+
+    a:link, a:visited,
+    a:active, a:hover {
+        //color: #c93;
+    }
+
+    a:hover {
+        text-decoration:  underline;
+    }
+
+img{
+    border:  none;
+}
+
+div{
+    margin:  5px;
+    padding:  5px;
+}
+
+mark {
+    background-color: #a6dbed;
+    //padding-left: 5px;
+    //padding-right: 5px;
+}
+
+.float-left {
+    float: left;
+}
+
+.float-right {
+    float: right;
+}
+
+.clear-fix:after {
+    content: ".";
+    clear: both;
+    display: block;
+    height: 0;
+    visibility: hidden;
+}
+
+/ * page titles * /
+hgroup.title {
+    margin-bottom: 10px;
+}
+
+hgroup.title h1, hgroup.title h2, hgroup.title h3 {
+    display: inline;
+    padding:  0px 10px;
+    border-left:  dotted #c93 1px;
+}
+
+hgroup.title h1:first-of-type, hgroup.title h2:first-of-type, hgroup.title h3:first-of-type {
+    padding-left:  0px;
+    border-left:  none;
+}
+
+hgroup.title a{
+    display:  inline-block;
+}
+
+hgroup.title a:first-child{
+    margin-left:  0px;
+}
+
+h1, h2, h3,
+h4, h5, h6 {
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+h1:first-of-type, h2:first-of-type, h3:first-of-type,
+h4:first-of-type, h5:first-of-type, h6:first-of-type {
+    margin-top: 0;
+    padding-top: 0;
+}
+
+
+
+
+/*----------------------------------------------------------
+             /%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\
+            <«  !!!     S T A R T      !!!  »>
+                       H E A D E R                        */
+header{
+    background: none;
+}
+
+header div{
+    margin:  0px;
+    padding:  0px;
+}
+
+header .content-wrapper {
+    position:  relative;
+    padding-top: 20px;
+}
+
+
+/* Site Title */
+.site-title {
+    color: #c8c8c8;
+    font-family: Rockwell, Consolas, "Courier New", Courier, monospace;
+    font-size: 2.3em;
+    margin: 0;
+}
+
+.site-title a, .site-title a:hover, .site-title a:active {
+    /* background: none; */
+    color: #c8c8c8;
+    outline: none;
+    text-decoration: none;
+}
+
+
+/* Login */
+#login {
+    display: block;
+    font-size: .85em;
+    margin: 0 0 10px;
+    text-align: right;
+}
+
+    #login a {
+        /* background-color: #d3dce0; (original) */
+        margin-left: 10px;
+        margin-right: 3px;
+        padding: 2px 3px;
+        text-decoration: none;
+    }
+
+    #login a.email {
+        background: none;
+        margin: 0;
+        padding: 0;
+        text-decoration: underline;
+    }
+
+    #login form{
+        display:  inline;
+    }
+
+    #login ul {
+        margin: 0;
+    }
+
+    #login li {
+        display: inline;
+        list-style: none;
+    }
+
+
+/* Menu */
+ul#menu {
+    font-size: 1em;
+    font-weight: 600;
+    margin: 0 0 0px;
+    padding: 0;
+    text-align: right;
+}
+
+    ul#menu li {
+        display: inline;
+        list-style: none;
+        padding: 0px 5px;
+    }
+
+        ul#menu li a {
+            background: none;
+            color: #c93;
+            text-decoration: none;
+            /* Below added from newlayout.css */
+            font-size: .85em;
+	        font-family: 'LeagueGothicRegular';
+	        text-decoration: none;
+	        text-transform: uppercase;
+	        text-shadow: 0px 0px 3px rgba(150,150,150,0.4);
+        }
+
+        ul#menu li a:hover {
+            color: #eb5;
+            text-decoration: none;
+        }
+
+        ul#menu li.current-page{
+            //background: #600;
+            //border-top-left-radius:  5px;
+            //border-top-right-radius:  5px;
+        }
+/*                     H E A D E R
+            <«  !!!       E N D        !!!  »>
+             \%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%/
+----------------------------------------------------------*/
+
+
+
+
+ /*******************************************************\
+<«      !!!!!!           S T A R T           !!!!!!      »>
+                        F O O T E R */
+footer {
+    //height: 100px;
+    clear: both;
+    background: none;
+    font-size: .8em;
+}
+
+footer div{
+    padding:  0px;
+}
+                     /* F O O T E R
+<«      !!!!!!             E N D             !!!!!!      »>
+ \*******************************************************/
+
+
+
+
+ /*******************************************************\
+<«      !!!!!!           S T A R T           !!!!!!      »>
+                          B O D Y */
+/* main layout
+----------------------------------------------------------*/
+.content-wrapper {
+    width: 960px;
+    //display:  block;
+    margin: 0 auto;
+}
+
+#body {
+    min-height:  500px;
+    clear: both;
+    margin:  0px;
+    padding:  30px 0px 30px 0px;
+    background-color: #600;
+}
+
+    .main-content {
+        //padding-left: 100px;
+        //padding-top: 30px;
+    }
+    
+.featured{
+    margin-bottom: 20px;
+}
+
+    .featured h2{
+        margin-top:  0px;
+        color:  #900;
+        text-shadow: -2px 2px 2px rgba(25, 25, 25, 1);
+        text-transform: uppercase;
+    }
+                       /* B O D Y
+<«      !!!!!!             E N D             !!!!!!      »>
+ \*******************************************************/
+
+
+
+ /*******************************************************\
+<«      !!!!!!           S T A R T           !!!!!!      »>
+                       C O N T E N T */
+
+/* Home */
+div.news, div#facebookFeed{
+    width:  40%;
+    min-height:  300px;
+    padding-left:  50px;
+    border-right:  dotted #b37d50 1px;
+}
+
+div.news h2, div#facebookFeed h2{
+    color:  #900;
+    text-shadow: -2px 2px 2px rgba(25, 25, 25, 1);
+    text-transform: lowercase;
+}
+
+div.news h2:before, div#facebookFeed h2:before{
+    /*content: "./";*/
+}
+
+div.news h3:first-child{
+    margin-top:  0px;
+}
+
+div.news a{
+    
+    font-weight:  900;
+}
+
+div#facebookFeed{
+    border-right:  none;
+}
+
+
+/* About */
+.main-content>#weapons{
+    display:  none;
+}
+                    /* C O N T E N T
+<«      !!!!!!             E N D             !!!!!!      »>
+ \*******************************************************/
+
+
+/*----------------------------------------------------------
+             /%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\
+            <«  !!!     S T A R T      !!!  »>
+            F E S T I V A L S  &  F A I R E S             */
+
+section#festivals-slide{
+    width:  900px;
+    height:  420px;
+    line-height:  400px;
+    position:  relative;
+    display:  block;
+    margin:  auto;
+}
+
+    /* border for festivals scrolling area */
+    #festivals-slide a.border{
+        width:  50px;
+        height:  inherit;
+        line-height:  inherit;
+        position:  absolute;
+        display:  none;
+        padding:  1px;
+        margin:  0px;
+        background-color:  rgba(100,100,100,0.4);
+        color:  #fff;
+        /*color:  transparent;
+        background-color:  transparent;*/
+        font-size:  3em;
+        font-weight:  700;
+        text-decoration: none;
+        text-align: center;
+        vertical-align: middle;
+    }
+
+    #festivals-slide a#left{
+        top:  0px;    
+        left: -1px;
+        border-top-left-radius: 10px;
+        border-bottom-left-radius: 10px;
+    }
+
+    #festivals-slide .border>img{
+        width:  20px;
+        height:  20px;
+    }
+
+    #festivals-slide a#right{
+        top:  0px;
+        right:  -2px;
+        border-top-right-radius: 10px;
+        border-bottom-right-radius: 10px;
+    }
+
+    
+    #festivals-slide a.border:hover {
+        display:  block;
+    }
+
+
+
+/* Container for slideshow */
+div#scroll-x{
+    width:  100%;
+    height:  inherit;
+    margin:  0px;
+    padding:  0px;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    background-color:  #000;
+    border:  solid black 1px;
+    border-radius:  10px;
+}
+    
+    /* Container for all festivals in slideshow */
+    div#festivals-wrapper{
+        width:  4500px;
+        height:  inherit;
+        margin:  0px;
+        padding:  0px;
+    }
+        
+        /* Individual Festival */
+        #festivals-wrapper div.festival{
+            width:  800px;
+            height:  inherit;
+            display:  inline;
+            float:  left;
+            clear:  none;
+            margin:  0px;
+            padding: 0px 50px;
+        }
+            
+            /* First festival in the slideshow */
+            #festivals-wrapper .festival:first-child{}
+            
+            #festivals-wrapper .festival img, 
+            #festivals-wrapper .festival>a,
+            #festivals-wrapper .festival>aside{
+                margin:  0px;
+                padding:  0px;
+                display:  block;
+                float:  left;
+                border:  none;
+            }
+
+            /* URL to the festival */
+            #festivals-wrapper .festival a{
+                width:  600px;
+                height:  400px;
+                
+            }
+            
+            /* Image of the Festival Booth */
+            #festivals-wrapper .festival img{
+                width:  600px;
+                height:  400px;
+            }
+            
+            /* Festival Details */
+            #festivals-wrapper .festival aside{
+                width:  200px;
+                line-height: normal;
+            }
+            
+            /* Individual sections of festival details */
+            #festivals-wrapper .festival p{
+                margin:  0px 0px;
+                padding:  5px 5px;
+                vertical-align: top;
+            }
+
+/* Container for bullets */
+div#bullets{
+    width:  auto;
+    height:  20px;
+    line-height:  normal;
+    margin:  0px;
+    margin-top:  -20px;
+    padding:  0px;
+    text-align:  center;
+}
+    
+    /* Link to change current slide */
+    div#bullets a{
+        display:  inline;
+    }
+    
+    /* Individual Bullets */
+    div#bullets img{
+        width:  10px;
+        height:  10px;
+        margin:  0px;
+        padding:  5px 5px;
+        display:  inline;
+        //float:  left;
+    }
+/*          F E S T I V A L S  &  F A I R E S
+            <«  !!!       E N D        !!!  »>
+             \%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%/
+----------------------------------------------------------*/
+
+
+
+
+
+/*
+    ☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻
+    ☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻
+    ☻☻☻☻*******************************************************************************************************☻☻☻☻
+    ☻☻☻☻*******███*******^██*******^██████*****************██████**********███*******^██████*******^██████████*☻☻☻☻
+    ☻☻☻☻*****██  ▒██*****▒██*******▒██   ▒██**************██   ▒██*******██  ▒██*****▒██   ▒██*****▒██*********☻☻☻☻
+    ☻☻☻☻***██      ▒██***▒██*******▒██     ▒██***********██     ▒██****██      ▒██***▒██     ▒██***▒██*********☻☻☻☻
+    ☻☻☻☻**██        ▒██**▒██*******▒██      ▒██********^██         ***██        ▒██**▒██      ▒██**▒██*********☻☻☻☻
+    ☻☻☻☻*██          ▒██*▒██*******▒██       ▒██*******▒██         **██          ▒██*▒██       ▒██*▒██████*****☻☻☻☻
+    ☻☻☻☻*▒██         ██**▒██*******▒██       ██********▒██         **▒██         ██**▒██       ██**▒██*********☻☻☻☻
+    ☻☻☻☻**▒██       ██***▒██*******▒██      ██**********▒██      ██***▒██       ██***▒██      ██***▒██*********☻☻☻☻
+    ☻☻☻☻****▒██   ██*****▒██*******▒██    ██*************▒██    ██******▒██   ██*****▒██    ██*****▒██*********☻☻☻☻
+    ☻☻☻☻******▒███*******▒████████*▒██████****************▒██████*********▒███*******▒██████*******▒██████████*☻☻☻☻
+    ☻☻☻☻*******************************************************************************************************☻☻☻☻
+    ☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻
+    ☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻☻
+*/
+
+
+
+
+/* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+   XxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxX
+   ###############################################################################
+   =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=OLD CSS=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+   ###############################################################################
+   XxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxX
+   @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
+
+/*
+
+/ * page elements
+----------------------------------------------------------* /
+/ * featured * /
+.featured {
+    background-color: transparent;
+}
+
+    .featured .content-wrapper {
+        background-color: transparent;
+        color: #fff;
+        //padding: 20px 40px 30px 40px;
+    }
+
+        .featured hgroup.title h1, .featured hgroup.title h2 {
+            color: #fff;
+        }
+
+        .featured p {
+            font-size: 1.1em;
+        }
+
+/ * page titles * /
+hgroup.title {
+    margin-bottom: 10px;
+}
+
+hgroup.title h1, hgroup.title h2 {
+    //display: inline;
+}
+
+hgroup.title h2 {
+    font-weight: normal;
+    margin-left: 3px;
+}
+
+/ * features * /
+section.feature {
+    //width: 300px;
+    //float: left;
+    padding: 10px;
+}
+
+
+
+
+/ * ordered list * /
+ol.round {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+    ol.round li {
+        margin: 25px 0;
+        padding-left: 45px;
+    }
+
+        ol.round li.zero {
+            background: url("../images/orderedList0.png") no-repeat;
+        }
+
+        ol.round li.one {
+            background: url("../images/orderedList1.png") no-repeat;
+        }
+
+        ol.round li.two {
+            background: url("../images/orderedList2.png") no-repeat;
+        }
+
+        ol.round li.three {
+            background: url("../images/orderedList3.png") no-repeat;
+        }
+
+        ol.round li.four {
+            background: url("../images/orderedList4.png") no-repeat;
+        }
+
+        ol.round li.five {
+            background: url("../images/orderedList5.png") no-repeat;
+        }
+
+        ol.round li.six {
+            background: url("../images/orderedList6.png") no-repeat;
+        }
+
+        ol.round li.seven {
+            background: url("../images/orderedList7.png") no-repeat;
+        }
+
+        ol.round li.eight {
+            background: url("../images/orderedList8.png") no-repeat;
+        }
+
+        ol.round li.nine {
+            background: url("../images/orderedList9.png") no-repeat;
+        }
+
+/ * content * /
+article {
+    float: left;
+    width: 70%;
+}
+
+aside {
+    float: right;
+    width: 25%;
+}
+
+    aside ul {
+        list-style: none;
+        padding: 0;
+    }
+
+        aside ul li {
+            background: url("../Images/bullet.png") no-repeat 0 50%;
+            padding: 2px 0 2px 20px;
+        }
+
+.label {
+    font-weight: 700;
+}
+
+/ * login page * /
+#loginForm {
+    border-right: solid 2px #c8c8c8;
+    float: left;
+    width: 55%;
+}
+
+    #loginForm .validation-error {
+        display: block;
+        margin-left: 15px;
+    }
+
+    #loginForm .validation-summary-errors ul {
+        margin: 0;
+        padding: 0;
+    }
+
+    #loginForm .validation-summary-errors li {
+        display: inline;
+        list-style: none;
+        margin: 0;
+    }
+
+    #loginForm input {
+        width: 250px;
+    }
+
+    #loginForm input[type="checkbox"],
+    #loginForm input[type="submit"],
+    #loginForm input[type="button"],
+    #loginForm button {
+        width: auto;
+    }
+
+#socialLoginForm {
+    margin-left: 40px;
+    float: left;
+    width: 40%;
+}
+
+    #socialLoginForm h2 {
+        margin-bottom:  5px;
+    }
+
+#socialLoginList button {
+    margin-bottom: 12px;
+}
+
+#logoutForm {
+    display: inline;
+}
+
+/ * contact * /
+section.contact header{
+    //height:  auto;
+}
+
+.contact h3 {
+    font-size: 1.2em;
+}
+
+.contact p {
+    margin: 5px 0 0 10px;
+}
+
+.contact iframe {
+    border: 1px solid #333;
+    margin: 5px 0 0 10px;
+}
+
+/ * forms * /
+fieldset {
+    border: none;
+    margin: 0;
+    padding: 0;
+}
+
+    fieldset legend {
+        display: none;
+    }
+
+    fieldset ol {
+        padding: 0;
+        list-style: none;
+    }
+
+        fieldset ol li {
+            padding-bottom: 5px;
+        }
+
+label {
+    display: block;
+    font-size: 1.2em;
+    font-weight: 600;
+}
+
+label.checkbox {
+    display: inline;
+}
+
+input, textarea {
+    border: 1px solid #e2e2e2;
+    background: #fff;
+    color: #333;
+    font-size: 1.2em;
+    margin: 5px 0 6px 0;
+    padding: 5px;
+    width: 300px;
+}
+
+textarea {
+    font-family: inherit;
+    width: 500px;
+}
+
+    input:focus, textarea:focus {
+        border: 1px solid #7ac0da;
+    }
+
+    input[type="checkbox"] {
+        background: transparent;
+        border: inherit;
+        width: auto;
+    }
+
+    input[type="submit"],
+    input[type="button"],
+    button {
+        background-color: #d3dce0;
+        border: 1px solid #787878;
+        cursor: pointer;
+        font-size: 1.2em;
+        font-weight: 600;
+        padding: 7px;
+        margin-right: 8px;
+        width: auto;
+    }
+
+    td input[type="submit"],
+    td input[type="button"],
+    td button {
+        font-size: 1em;
+        padding: 4px;
+        margin-right: 4px;
+    }
+
+/ * info and errors * /
+.message-info {
+    border: 1px solid;
+    clear: both;
+    padding: 10px 20px;
+}
+
+.message-error {
+    clear: both;
+    color: #e80c4d;
+    font-size: 1.1em;
+    font-weight: bold;
+    margin: 20px 0 10px 0;
+}
+
+.message-success {
+    color: #7ac0da;
+    font-size: 1.3em;
+    font-weight: bold;
+    margin: 20px 0 10px 0;
+}
+
+.error {
+    color: #e80c4d;
+}
+
+/ * styles for validation helpers * /
+.field-validation-error {
+    color: #e80c4d;
+    font-weight: bold;
+}
+
+.field-validation-valid {
+    display: none;
+}
+
+input.input-validation-error {
+    border: 1px solid #e80c4d;
+}
+
+input[type="checkbox"].input-validation-error {
+    border: 0 none;
+}
+
+.validation-summary-errors {
+    color: #e80c4d;
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
+.validation-summary-valid {
+    display: none;
+}
+
+
+/ * tables
+----------------------------------------------------------* /
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    margin-top: 0.75em;
+    border: 0 none;
+}
+
+th {
+    font-size: 1.2em;
+    text-align: left;
+    border: none 0px;
+    padding-left: 0;
+}
+
+    th a {
+        display: block;
+        position: relative;
+    }
+
+    th a:link, th a:visited, th a:active, th a:hover {
+        color: #333;
+        font-weight: 600;
+        text-decoration: none;
+        padding: 0;
+    }
+
+    th a:hover {
+        color: #000;
+    }
+
+    th.asc a, th.desc a {
+        margin-right: .75em;
+    }
+
+    th.asc a:after, th.desc a:after {
+        display: block;
+        position: absolute;
+        right: 0em;
+        top: 0;
+        font-size: 0.75em;
+    }
+
+    th.asc a:after {
+        content: '▲';
+    }
+
+    th.desc a:after {
+        content: '▼';
+    }
+
+td {
+    padding: 0.25em 2em 0.25em 0em;
+    border: 0 none;
+}
+
+tr.pager td {
+    padding: 0 0.25em 0 0;
+}
+
+
+    
+*/

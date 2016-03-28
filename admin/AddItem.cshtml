@@ -1,0 +1,46 @@
+﻿@{
+    WebSecurity.RequireRoles("admin");
+
+    var item = UrlData[0];
+
+    switch(item){
+        case "Category":
+            var categoryId = Request["CategoryId"];
+            var categoryName = Request["CategoryName"];
+            var categoryDesc = Request["CategoryDesc"];
+
+            var db = Database.Open("Sabersmith");
+            string sql = @"Execute sp_addCategory @0, @1";
+            db.Execute(sql, categoryName, categoryDesc);
+
+            
+            sql = @"SELECT * FROM categories WHERE pk_CategoryID = @0";
+            var result = db.QuerySingle(sql, categoryId);
+            Json.Write(result, Response.Output);
+            break;
+
+        case "SubCategory":
+            var subCategoryId = Request["CategoryId"];
+            var subCategoryName = Request["CategoryName"];
+            var subCategoryGroup = Request["CategoryGroup"];
+            var subCategoryDesc = Request["CategoryDesc"];
+
+            var db3 = Database.Open("Sabersmith");
+            string sql3 = @"Execute sp_addSubCategory @0, @1, @2";
+            db3.Execute(sql3, subCategoryGroup, subCategoryName, subCategoryDesc);
+
+            
+            sql3 = @"SELECT sc.SubCategoryName, c.CategoryName, sc.SubCategoryDesc
+                    FROM sub_categories sc
+                    INNER JOIN categories c
+                    ON sc.fk_CategoryID = c.pk_CategoryID
+                    WHERE pk_SubCategoryID = @0";
+            var result3 = db3.QuerySingle(sql3, subCategoryId);
+            Json.Write(result3, Response.Output);
+            break;
+
+        default:
+            break;
+    }
+
+}

@@ -1,0 +1,29 @@
+section#forum-list{
+    width:  100%;
+}
+
+#forum-list .forum:first-child{
+    margin-top: 0px;
+}
+
+#forum-list .forum{
+    margin-top:  10px;
+}
+
+p.forum{
+    background-color:  #555;
+}
+
+p.forum .header{
+    padding:  2px 5px;
+    display:  block;
+    background-color:  #444;
+    border:  solid black 1px;
+}
+
+p.forum .description{
+    padding:  2px 5px;
+    display:  block;
+    border:  solid black 1px;
+    border-top:  none;
+}

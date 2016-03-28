@@ -1,0 +1,392 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    background-color: #111;
+}
+
+
+body {
+    color: #fff;
+    font-size: .85em;
+    font-family: "Segoe UI", Verdana, Helvetica, Sans-Serif;
+}
+
+a {
+    color: #c93;
+    outline: none;
+    padding-left: 3px;
+    padding-right: 3px;
+    text-decoration: underline;
+}
+
+    a:link, a:visited,
+    a:active {color: #c93;}
+
+
+
+article{
+    width:  70%;
+    float:  left;
+    clear:  none;
+    margin:  10px;
+    margin-top:  0px;
+    padding:  0px;
+    border:  solid #111 1px;
+    border-radius:  10px;
+    background-color:  #111;
+}
+
+article header{
+    width:  100%;
+    margin:  0px;
+    padding-left:  10px;
+    font-weight:  800;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+article div{
+    padding:  10px;
+    background-color:  #600;
+}
+
+article div:last-child{
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+article a{
+    font-weight:  700;
+}
+
+aside{
+    width:  25%;
+    float:  right;
+}
+
+p{
+    margin:  0px;
+    padding:  0px;
+}
+
+.float-left {
+    float: left;
+}
+
+.float-right {
+    float: right;
+}
+
+.clear-fix:after {
+    content: ".";
+    clear: both;
+    display: block;
+    height: 0;
+    visibility: hidden;
+}
+
+
+/* main layout
+----------------------------------------------------------*/
+#page {
+    width:  100%;
+    margin: 0 auto;
+}
+
+div#headerWrapper{
+    width:  100%;
+    background-color:  transparent;
+}
+
+header#main {
+    width:  960px;
+    height: 85px;
+    margin:  auto;
+}
+
+#bodyWrapper{
+    width:  100%;
+    background-color:  #600;
+}
+
+#body {
+    width:  960px;
+    min-height:  600px;
+    margin: 0px auto 0px auto;
+    padding-top: 50px;
+    background-color: transparent;
+}
+
+div#footerWrapper{
+    width:  100%;
+    background-color:  transparent;
+}
+
+footer{
+    width:  960px;
+    margin:  auto;
+}
+
+div#sidebar {
+    float: right;
+    margin:10px 0px 10px 30px;
+    width: 27%;
+}
+
+section#main {
+    float: left;
+    width: 65%;
+}
+
+
+/* site title
+----------------------------------------------------------*/
+.site-title {
+    color: #c8c8c8;
+    font-family: Rockwell, Consolas, "Courier New", Courier, monospace;
+    font-size: 2.3em;
+    margin: 0;
+}
+
+.site-title a, .site-title a:hover, .site-title a:active {
+    color: #c8c8c8;
+    outline: none;
+    text-decoration: none;
+}
+
+
+/* login
+----------------------------------------------------------*/
+#login {
+    display: block;
+    font-size: .85em;
+    margin: 0 0 10px;
+    text-align: right;
+}
+
+    #login a {
+        margin-left: 10px;
+        margin-right: 3px;
+        padding: 2px 3px;
+        text-decoration: none;
+    }
+
+    #login a.email {
+        background: none;
+        margin: 0;
+        padding: 0;
+        text-decoration: underline;
+    }
+
+    #login ul {
+        margin: 0;
+    }
+
+    #login li {
+        display: inline;
+        list-style: none;
+    }
+
+
+/* menu
+----------------------------------------------------------*/
+ul#menu {
+    font-size: 1em;
+    font-weight: 600;
+    margin: 0 0 0px;
+    padding: 0;
+    text-align: right;
+}
+
+    ul#menu li {
+        display: inline;
+        list-style: none;
+        padding: 0px 5px;
+    }
+
+        ul#menu li a {
+            background: none;
+            color: #c93;                                                                                                  
+            text-decoration: none;
+            font-size: .85em;
+	        font-family: 'LeagueGothicRegular';
+	        text-decoration: none;
+	        text-transform: uppercase;
+	        text-shadow: 0px 0px 3px rgba(150,150,150,0.4);
+        }
+
+        ul#menu li a:hover {
+            color: #eb5;
+            text-decoration: none;
+        }
+
+
+
+/* page elements
+----------------------------------------------------------*/
+/* login page */
+#loginForm {
+    border-right: solid 2px #c8c8c8;
+    float: left;
+    width: 55%;
+}
+
+    #loginForm .validation-error {
+        display: block;
+        margin-left: 15px;
+    }
+
+    #loginForm .validation-summary-errors ul {
+        margin: 0;
+        padding: 0;
+    }
+
+    #loginForm .validation-summary-errors li {
+        display: inline;
+        list-style: none;
+        margin: 0;
+    }
+
+    #loginForm input {
+        width: 250px;
+    }
+
+    #loginForm input[type="checkbox"],
+    #loginForm input[type="submit"],
+    #loginForm input[type="button"],
+    #loginForm button {
+        width: auto;
+    }
+
+#socialLoginForm {
+    margin-left: 40px;
+    float: left;
+    width: 40%;
+}
+
+    #socialLoginForm h2 {
+        margin-bottom:  5px;
+    }
+
+#socialLoginList button {
+    margin-bottom: 12px;
+}
+
+#logoutForm {
+    display: inline;
+}
+
+/* contact */
+.contact h3 {
+    font-size: 1.2em;
+}
+
+.contact p {
+    margin: 5px 0 0 10px;
+}
+
+.contact iframe {
+    border: 1px solid #333;
+    margin: 5px 0 0 10px;
+}
+
+/* forms */
+
+
+
+
+
+/* Festivals & Faires */
+section#festivals-body{
+    width:  600px;
+    height:  400px;
+    line-height:  400px;
+    position:  relative;
+    display:  block;
+    margin:  auto;
+}
+
+    /* border for festivals scrolling area */
+    #festivals-body a.border{
+        width:  60px;
+        height:  inherit;
+        line-height:  inherit;
+        position:  absolute;
+        display:  block;
+        padding:  0px;
+        margin:  0px;
+        color:  transparent;
+        background-color:  transparent;
+        font-size:  3em;
+        font-weight:  700;
+        text-decoration: none;
+        text-align: center;
+        vertical-align: middle;
+    }
+
+    #festivals-body a#left{
+        top:  0px;    
+        left: 0px;
+    }
+
+    #festivals-body a#right{
+        top:  0px;
+        right:  0px;
+    }
+
+    #festivals-body a.border:hover {
+        background-color:  rgba(100,100,100,0.3);
+        color:  #fff;
+    }
+
+
+
+
+div#scroll-x{
+    width:  100%;
+    height:  inherit;
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
+
+    div#festivals-wrapper{
+        width:  3800px;
+        height:  inherit;
+    }
+
+        div.festival{
+            width:  600px;
+            height:  inherit;
+            display:  inline;
+            float:  left;
+            clear:  none;
+            margin:  0px;
+            padding:  0px;
+        }
+
+            #festivals-wrapper .festival:first-child{}
+
+            .festival img{
+                width:  600px;
+                height:  400px;
+                margin:  0px;
+                padding:  0px;
+            }
+
+            .festival article{
+                width:  100%;
+                border:  solid black 1px;
+            }
+
+            .festival p{
+                height:  25px;
+                margin:  0px 0px;
+                vertical-align: top;
+                border:  solid yellow 1px;
+            }
+
+            .festival img, .festival>a, .festival>article{
+                margin:  0px;
+                padding:  0px;
+                border:  none;
+            }

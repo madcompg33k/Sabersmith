@@ -1,0 +1,339 @@
+nav#products-smenu{
+    width:  150px;
+    position:  relative;
+    float:  left;
+    margin-right:  50px;
+    padding:  0px;
+}
+
+    /* Header text for menu sections */
+    #products-smenu>h3{
+        background: none;
+        color: #fc6;
+        font-weight:  bold;
+        text-decoration: none;
+        font-size: 1.2em;
+	    font-family: 'LeagueGothicRegular';
+	    text-decoration: none;
+	    text-shadow: 0px 0px 3px rgba(150,150,150,0.4);
+    }
+
+    #products-smenu ul#menu li{
+        width:  auto;
+        display:  block;
+        clear:  both;
+        //float:  left;
+        margin: 0px 0px 0px 10px;
+        padding:  0px;
+        text-align:  left;
+    }
+
+    /* Menu Items */
+    #products-smenu ul#menu a{
+        text-transform: none;
+    }
+
+
+
+/*----------------------------------------------*/
+/* Area to sort/filter as well as show products */
+/*----------------------------------------------*/
+section#products{
+    max-width:  700px;
+    float:  left
+}
+
+    #products h2:first-child{
+        margin-bottom:  5px;
+        color:  #eb5;
+        text-shadow: -2px 2px 1px rgba(25, 25, 25, 0.7);
+        border-bottom:  solid #c93 1px;
+    }
+
+    #products header{
+    width:  100%;
+    height:  50px;
+    border:  solid black 0px;
+}
+
+    #products header .label{
+        display:  block;
+        clear:  none;
+        float:  left;
+        padding:  0px 5px;
+        margin:  2px 5px;
+    }
+
+    #products header select{
+        float:  left;
+        margin:  2px 15px 2px 0px;
+        background-color:  #500;
+        color:  #fff;
+        /*
+        border-top-color: #800;
+        border-left-color: #800;
+        border-right-color: #300;
+        border-bottom-color: #300;
+        */
+        border: solid #300 1px;
+    }
+
+#product-list{
+    display:  inline-block;
+}
+
+.product-item{
+    width:  200px;
+    display:  inline-block;
+    float:  left;
+    padding: 5px;
+}
+
+/* Product Name */
+.product-item h4{
+    display: block;
+    font-weight:  bold;
+    margin:  0px;
+    margin-left:  5px;
+}
+
+.product-item img{
+    width:  50px;
+    height:  120px;
+    float:  left;
+    margin:  10px;
+}
+
+/* Product name and short description */
+.product-item span{
+    width:  125px;
+    height:  90px;
+    display:  inline-block;
+    margin:  0px;
+    font-size:  .8em;
+}
+
+.product-item mark{ /* Price Display Area */
+    display:  block;
+    margin-top:  20px;
+    background-color:  #800;
+    border-radius: 5px;
+    font-weight: 600;
+    font-size:  .9em;
+}
+
+
+
+
+
+/*----------------------------------------------*/
+/*          PRODUCT DETAILS PAGE                */
+/*----------------------------------------------*/
+section.product-details{
+    width:  700px;
+    margin-left:  35px;
+}
+
+
+/* DETAILS/OPTIONS FOR CURRENT PRODUCT */
+div#product-desc{
+    min-height:  535px;
+    float:  left;
+    clear:  none;
+    margin-left:  250px;
+}
+
+    #product-desc>h2{
+        color:  #c93;
+        text-shadow: 1px 1px 3px rgba(50,50,50,.5);
+    }
+
+    #product-desc span{
+        display:  block;
+    }
+
+    p#price{
+        height:  50px;
+        margin:  0px;
+        padding:  0px;
+        font-weight:  bold;
+        font-size:  1.2em;
+    }
+
+    span#option-price{
+        margin:  0px;
+        padding:  0px;
+        font-size:  .7em;
+        font-weight:  normal;
+    }
+
+    #product-desc span:first-child{  /* Put price on the same line as "Price:" */
+        display:  inline;
+    }
+
+    #product-desc p.detail{
+        margin:  0px;    
+        font-size:  .9em;
+    }
+
+    #product-desc h4{ /* Options Header */
+        width:  100%;
+        display:  block;
+        margin-top:  25px;
+        font-weight:  700;
+        text-decoration:  underline;
+    }
+    
+    #product-desc h4~span{
+        font-size:  .7em;
+    }
+
+    #product-desc h5{  /* Secondary Options Header*/
+        width:  100%;
+        display:  block;
+        margin-top:  5px;
+        font-weight:  600;
+    }
+
+    /* Product Options */
+    div.product-options{
+        height:  25px;
+        display:  block;
+        margin: 2px 0px;
+    }
+
+        .product-options > span:first-child{ /* Individual Option Header */
+            width:  90px;
+            display:  block;
+            float:  left;
+        }
+
+        .product-options select{
+            width:  150px;
+            display:  block;
+            float:  left;
+            margin-left:  5px;
+        }
+    
+        /* Secondary Options */
+        #product-desc h5 ~ .product-options{ /* Add a left margin to all sub-options */
+            margin:  0px;
+            margin-left:  15px;
+            padding:  0px;
+        }
+
+        .product-options input[type=checkbox]{
+        display:  block;
+        float:  left;
+        margin:  0px;
+        margin-top: 2px;
+        margin-right:  5px;
+        padding:  0px;
+    }
+
+    div.cart{
+        height:  25px;
+        display:  block;
+        margin: 30px 0px;
+    }
+
+        .cart>label{
+        display:  inline;
+        font-weight:  600;
+    }
+
+        input#qty{
+            width:  20px;
+            height:  18px;
+            margin:  0px 5px;
+            padding:  0px;
+            font-size:  .9em;
+            text-align:  center;
+        }
+
+        .cart a{
+            padding: 2px 5px;
+            font-size:  .9em;
+            font-weight:  700;
+            background-color:  rgba(180,180,180,1);
+            border-top:  solid rgba(255,255,255,0.3) 1px;
+            border-left:  solid rgba(255,255,255,0.3) 1px;
+            color:  #000;
+            border-radius: 5px;
+            text-decoration:  none;
+        }
+
+
+
+
+/**********************************************************
+***********************************************************
+********************** PRODUCT IMAGE **********************
+***********************************************************
+***********************************************************/
+
+div#product-image{
+    position:  relative;
+    float:  left;
+}
+    
+    #product-image>img{
+        position:  absolute;
+    }
+
+    #product-image>img.hidden{
+        display:  none;
+    }
+
+    img#pommel{
+        top:  0px;
+        left:  0px;
+        z-index: 1;
+    }
+
+    img#grip{
+        top:  20px;
+        left:  0px;
+        z-index: 2;
+    }
+
+    img#guard{
+        top:  113px;
+        left:  0px;
+        z-index: 3;
+    }
+
+    img#blade{
+        top:  154px;
+        left:  0px;
+        z-index: 4;
+    }
+
+
+/* BASKET CUTLASS */
+    #basketcutlass img#pommel{display:  none;}
+
+    #basketcutlass img#grip{
+        top:  8px;
+        left:  4px;
+        z-index: 1;
+    }
+
+    #basketcutlass img#guard{
+        top:  0px;
+        z-index: 3;
+    }
+
+    #basketcutlass img#blade{
+        top:  119px;
+        left:  16px;
+        z-index: 4;
+    }
+    
+    #basketcutlass h5{display:  none;}
+    
+    #basketcutlass #anodize-parts{display:  none;}
+    #basketcutlass #anodize-parts~span{display:  none;}
+    
+    #basketcutlass #anodize-blade{display:  none;}
+    #basketcutlass #anodize-blade~span{display:  none;}

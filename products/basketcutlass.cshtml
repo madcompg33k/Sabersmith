@@ -1,0 +1,177 @@
+﻿@{
+    Layout = "~/products/_ProductsLayout.cshtml";
+    Page.Title = "Product Details";
+}
+
+<script type="text/javascript">
+    var currentWeapon = "basket_cutlass";
+    var largePath = "/images/swords/" + currentWeapon + "/";
+
+    var basePrice = 200;
+    var innerWrap = "iblk";
+    var outerWrap = "oblk";
+    var anodize_parts = false;
+    var anodize_blade = false;
+
+    $(function (changeProductImage)
+    {
+
+        /* Set the inner wrap color */
+        $(".inner-wrap").hover(function ()
+        {
+            innerWrap = $(this).attr("id");
+            var gripPath = largePath + "grip-" + innerWrap + "-" + outerWrap + ".png";
+
+            $("#grip").attr({ src: gripPath });
+
+            /* <!-- If the image does not exist, show the base image --> */
+             $("#grip").error(function ()
+            {
+                $("#grip").attr({ src: largePath + "grip-iblk-oblk.png" });
+            });
+
+            return false;
+        });
+
+        /* Set the outer wrap color */
+        $(".outer-wrap").hover(function ()
+        {
+            outerWrap = $(this).attr("id");
+            var gripPath = largePath + "grip-" + innerWrap + "-" + outerWrap + ".png";
+
+            $("#grip").attr({ src: gripPath });
+            
+            /* <!-- If the image does not exist, show the base image --> */
+            $("#grip").error(function ()
+            {
+                $("#grip").attr({ src: largePath + "grip-iblk-oblk.png" });
+            });
+            return false;
+        });
+
+
+        /* Check for anodized parts */
+        $("#anodize-parts").change(function ()
+        {
+            anodize_parts = false;
+
+            $("#anodize-parts:checked").each(function ()
+            {
+                anodize_parts = true;
+            });
+
+            var pommelPath = largePath + "pommel-" + anodize_parts + ".png";
+            var guardPath = largePath + "guard-" + anodize_parts + ".png";
+            $("#pommel").attr({ src: pommelPath });
+            $("#guard").attr({ src: guardPath });
+
+            changeImage();
+            return false;
+        });
+
+        /* Check for anodized blade */
+        $("#anodize-blade").change(function ()
+        {
+            anodize_blade = false;
+
+            $("#anodize-blade:checked").each(function ()
+            {
+                anodize_blade = true;
+            });
+
+            var bladePath = largePath + "blade-" + anodize_blade + ".png";
+            $("#blade").attr({ src: bladePath });
+
+            changeImage();
+            return false;
+        });
+
+        function changeImage()
+        {
+            /* Calculate Price */
+            var optionPrice = 0;
+            if (anodize_parts) optionPrice += 20;
+            if (anodize_blade) optionPrice += 50;
+            var totalPrice = basePrice + optionPrice;
+
+            /* Show Price */
+            if (optionPrice > 0)
+                $('#option-price').text('Options: $' + optionPrice);
+            else
+                $('#option-price').text('');
+            $('#total-price').text('$' + totalPrice)
+
+            return false;
+        }
+
+    });
+</script>
+
+<section id="basketcutlass" class="product-details">
+
+    <!-- Show all parts of the current product -->
+    <div id="product-image">
+        <img src="/images/swords/basket_cutlass/grip-iblk-oblk.png" id="grip" class="product-part" alt="Grip" />
+        <img src="/images/swords/basket_cutlass/guard-true.png" id="guard" class="product-part" alt="Guard" />
+        <img src="/images/swords/basket_cutlass/blade-false.png" id="blade" class="product-part" alt="Blade" />
+    </div>
+
+
+    <!-- Details and options for current product -->
+    <div id="product-desc">
+
+        <!-- Details of current product -->
+        <h2>Basket Cutlass</h2>
+        <p id="price">
+            Price: <span id="total-price">$200</span>
+            <span id="option-price"></span>
+        </p>
+        <p class="detail">Overall Length: 23 in.</p>
+        <p class="detail">Blade Length: 17 in.</p>
+        <p class="detail">Shipping Weight: 3 lbs</p>
+
+
+        <h4>Options</h4>
+        <!-- List of options for current product -->
+        <div class="product-options">
+            <span>Base Wrap:</span>
+            <select name="inner">
+                <option class="inner-wrap" id="iblk" value="Black (Leather)">Black (Leather)</option>
+                <option class="inner-wrap" id="igrn" value="Green (Leather)">Green (Leather)</option>
+                <option class="inner-wrap" id="ibrn" value="Brown (Leather)">Brown (Leather)</option>
+                <option class="inner-wrap" id="ired" value="Red (Leather)">Red (Leather)</option>
+                <option class="inner-wrap" id="iprp" value="Purple (Leather)">Purple (Leather)</option>
+                <option class="inner-wrap" id="iblu" value="Blue (Leather)">Blue (Leather)</option>
+            </select>
+        </div>
+
+        <div class="product-options">
+            <span>Outer Wrap:</span>
+            <select name="outer">
+                <option class="outer-wrap" id="oblk" value="Black (Leather)">Black (Leather)</option>
+                <option class="outer-wrap" id="ogrn" value="Green (Leather)">Green (Leather)</option>
+                <option class="outer-wrap" id="obrn" value="Brown (Leather)">Brown (Leather)</option>
+                <option class="outer-wrap" id="ored" value="Red (Leather)">Red (Leather)</option>
+                <option class="outer-wrap" id="oprp" value="Purple (Leather)">Purple (Leather)</option>
+                <option class="outer-wrap" id="oblu" value="Blue (Leather)">Blue (Leather)</option>
+            </select>
+        </div>
+
+
+        <h5>Black Oxide</h5>
+        <div class="product-options">
+            <input id="anodize-blade" type="checkbox" /> <span>Blade ($50)</span>
+        </div>
+
+        <div class="product-options">
+            <input id="anodize-parts" type="checkbox" /> <span>Parts ($20)</span>
+        </div>
+
+        <div class="cart">
+            <label for="qty">Qty</label> <input type="text" id="qty" value="1" maxlength="2" />
+            <a href="#">Add to Cart</a>
+        </div>
+    </div>
+    
+    
+</section>

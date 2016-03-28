@@ -1,0 +1,71 @@
+﻿@{
+    Layout = "~/products/_ProductsLayout.cshtml";
+    Page.Title = "Products";
+
+    var db = Database.Open("Sabersmith");
+    var categories = "SELECT * from categories";
+    var subcategories = "SELECT * from sub_categories";
+    var products = "SELECT * FROM products WHERE Discontinued = 'false' ORDER BY ProductName";
+    db.Close();
+}
+
+<h2>
+    Products: All
+</h2>
+
+<!-- Sort/Filter Options -->
+<header>
+    <p class="label">Category:</p>
+    <select>
+        <!-- Insert a foreach category in database/category class -->
+        <option value="All" selected>All</option>
+        @foreach(var row in db.Query(categories)){
+            <option value="@row.pk_CategoryID">@row.CategoryName</option>
+        }
+    </select>
+
+    <p class="label">Type:</p>
+    <select>
+        <!-- Insert a foreach sub_category in database/sub category class -->
+        <option value="All" selected>All</option>
+        @foreach(var row in db.Query(subcategories)){
+            <option value="@row.pk_SubCategoryID">@row.SubCategoryName</option>
+        }
+        <!-- option value="Swords_European">Swords (European)</option>
+        <option value="Swords_Eastern">Swords (Eastern)</option>
+        <option value="Daggers">Daggers</option>
+        <option value="Throwers">Throwers</option>
+        <option value="Axes">Axes</option>
+        <option value="Polearms">Polearms</option>
+        <option value="Hammers">Hammers</option>
+        <option value="Maces">Maces</option>
+        <option value="Scabbards">Scabbards</option>
+        <option value="Other">Other</option -->
+    </select>
+
+    <p class="label">Sort By:</p>
+    <select>
+        <option value="Relevance" selected>Relevance</option>
+        <option value="PHtoL">Price: High to Low</option>
+        <option value="PLtoH">Price: Low to High</option>
+        <option value="Most Popular">Most Popular</option>
+        <option value="Most Ordered">Most Ordered</option>
+    </select>
+</header>
+
+
+<section id="product-list">
+    @foreach (var p in db.Query(products)) {
+        <div class="product-item">
+        <header>
+            <h4><a href="~/products/product/@p.pk_ProductID">@p.ProductName</a></h4>
+
+            <img src="@p.IMGPath/@p.URLName/thumb.png" alt="@p.ProductName" />
+            <span>
+                @p.ProductDesc
+            </span>
+            <mark>Base Price: $@string.Format("{0:f}", p.UnitPrice)</mark>
+        </header>
+    </div>
+    }
+</section>

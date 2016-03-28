@@ -1,0 +1,70 @@
+﻿@{
+    WebSecurity.RequireRoles("admin");    
+
+    var item = UrlData[0];
+
+    switch(item){
+        case "Product":
+                var productId = Request["ProductId"];
+                var productName = Request["ProductName"];
+                var pcategoryId = Request["CategoryId"];
+                var psubCategoryId = Request["SubCategoryId"];
+                var price = Request["Price"];
+                var unitsOnOrder = Request["OnOrder"];
+                var discontinued = Request["Discontinued"];
+
+                var db1 = Database.Open("Sabersmith");
+                var sql1 = "UPDATE products SET ProductName = @0, fk_CategoryID = @1, fk_SubCategoryID = @2, UnitPrice = @3, UnitsOnOrder = @4, Discontinued = @5 WHERE pk_ProductID = @6";
+                db1.Execute(sql1, productName, pcategoryId, psubCategoryId, price, unitsOnOrder, discontinued, productId);
+
+                sql1 = @"SELECT p.ProductName, c.CategoryName, sc.SubCategoryName,
+                            '$' + CONVERT(varchar(12), UnitPrice, 1) AS UnitPrice,
+                            p.UnitsOnOrder, p.Discontinued
+                            FROM products p
+                            INNER JOIN categories c
+                            ON p.fk_CategoryID = c.pk_CategoryID
+                            INNER JOIN sub_categories sc
+                            ON p.fk_SubCategoryID = sc.pk_SubCategoryID
+                            WHERE pk_ProductID = @0";
+                var result1 = db1.QuerySingle(sql1, productId);
+                Json.Write(result1, Response.Output);
+            break;
+        
+        case "Category":
+            var categoryId = Request["CategoryId"];
+            var categoryName = Request["CategoryName"];
+            var categoryDesc = Request["CategoryDesc"];
+
+            var db2 = Database.Open("Sabersmith");
+            var sql2 = "UPDATE categories SET CategoryName = @0, CategoryDesc = @1 WHERE pk_CategoryID = @2";
+            db2.Execute(sql2, categoryName, categoryDesc, categoryId);
+            
+            sql2 = @"SELECT CategoryName, CategoryDesc FROM categories WHERE pk_CategoryID = @0";
+            var result2 = db2.QuerySingle(sql2, categoryId);
+            Json.Write(result2, Response.Output);
+            break;
+
+        case "Sub-Category":
+            var subCategoryId = Request["SubCategoryId"];
+            var subCategoryName = Request["SubCategoryName"];
+            var scCategoryId = Request["ParentCategoryId"];
+            var subCategoryDesc = Request["SubCategoryDesc"];
+
+            var db3 = Database.Open("Sabersmith");
+            var sql3 = "UPDATE sub_categories SET SubCategoryName = @0, fk_CategoryID = @1, SubCategoryDesc = @2 WHERE pk_SubCategoryID = @3";
+            db3.Execute(sql3, subCategoryName, scCategoryId, subCategoryDesc, subCategoryId);
+            
+            sql3 = @"SELECT sc.SubCategoryName, c.CategoryName, sc.SubCategoryDesc
+                    FROM sub_categories sc
+                    INNER JOIN categories c
+                    ON sc.fk_CategoryID = c.pk_CategoryID
+                    WHERE pk_SubCategoryID = @0";
+            var result3 = db3.QuerySingle(sql3, subCategoryId);
+            Json.Write(result3, Response.Output);
+            break;
+
+        default:
+            break;
+    }
+
+}

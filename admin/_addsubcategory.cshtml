@@ -1,0 +1,35 @@
+﻿@{
+    var db = Database.Open("Sabersmith");
+
+    /* Make list of all categories */
+    var categoriesList = db.Query("SELECT pk_CategoryID, CategoryName FROM categories")
+                            .Select(category => new SelectListItem {
+                                Value = category.pk_CategoryID.ToString(),
+                                Text = category.CategoryName
+                            });
+}
+
+<form>
+    <ul class="orderPageList" data-role="listview">
+        <li class="name">
+            <div class="fieldcontainer" data-role="fieldcontain">
+                <label for="subCatName">Name</label>
+                <input type="text" name="subCatName" id="subCatName" /><!-- class="text ui-widget-content ui-corner-all" -->
+            </div>
+        </li>
+
+        <li class="group">
+            <div class="fieldcontainer" data-role="fieldcontain">
+                <label for="subCatGroup">Group</label>
+                @Html.DropDownList("subCatGroup", null, categoriesList, 0)
+            </div>
+        </li>
+
+        <li class="description">
+            <div class="fieldcontainer" data-role="fieldcontain">
+                <label for="subCatDesc">Description</label>
+                <input type="text" name="subCatDesc" id="subCatDesc" value="" /><!-- class="text ui-widget-content ui-corner-all" -->
+            </div>
+        </li>
+    </ul>
+</form>

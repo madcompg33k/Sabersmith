@@ -1,0 +1,70 @@
+﻿@{
+    var db = Database.Open("Sabersmith");
+
+    /* Make list of all parent option categories */
+    var optionTypeList = db.Query("SELECT pk_ProductOptionID, ProductOptionName FROM product_options")
+                            .Select(type => new SelectListItem {
+                                Value = type.pk_ProductOptionID.ToString(),
+                                Text = type.ProductOptionName
+                            });
+    
+    /* Make list of all sub option items (sub sub options, like color) */
+    /*var optionColorList = db.Query("SELECT pk_ProductSubOptionItemID, ProductSubOptionItemName FROM product_sub_options_items")
+                            .Select(color => new SelectListItem {
+                                Value = color.pk_ProductSubOptionItemID.ToString(),
+                                Text = color.ProductSubOptionItemName
+                            });*/
+
+    var optionColorList= db.Query(@"SELECT psi.pk_ProductSubOptionItemID, psi.fk_ProductSubOptionID, psi.fk_ColorID, c.ColorName
+                        FROM product_sub_options_items psi
+                        INNER JOIN colors c
+                        ON psi.fk_ColorID = c.pk_ColorID
+                        ORDER BY ColorName ASC")
+                        .Select(color => new SelectListItem {
+                                Value = color.pk_ProductSubOptionItemID.ToString(),
+                                Text = color.ProductSubOptionItemName
+                            });
+}
+
+<form>
+    <ul class="orderPageList" data-role="listview">
+        <li class="name">
+            <div class="fieldcontainer" data-role="fieldcontain">
+                <label for="optionName">Name</label>
+                <input type="text" name="optionName" id="optionName" /><!-- class="text ui-widget-content ui-corner-all" -->
+            </div>
+        </li>
+
+        <li class="group">
+            <div class="fieldcontainer" data-role="fieldcontain">
+                <label for="optionType">Option Type</label>
+                @Html.DropDownList("optionType", null, optionTypeList, 0)
+                <button id="addOptionType">Add New</button>
+            </div>
+        </li>
+
+        <li class="description">
+            <div class="fieldcontainer" data-role="fieldcontain">
+                <label for="optionDesc">Description</label>
+                <input type="text" name="optionDesc" id="optionDesc" value="" /><!-- class="text ui-widget-content ui-corner-all" -->
+            </div>
+        </li>
+
+        <li class="addColorOptions">
+            <div class="fieldcontainer" data-role="fieldcontain">
+                <label for="optionColor">Color Options</label>
+                @Html.DropDownList("optionColor", null, optionTypeList, 0)
+                <button id="addColorOption">Add</button>
+
+                <select multiple size="1">
+                    <option value="Red">Red</option>
+                    <option value="Blue">Blue</option>
+                    <option value="Orange">Orange</option>
+                    <option value="Yellow">Yellow</option>
+                </select>
+            </div>
+        </li>
+
+        
+    </ul>
+</form>

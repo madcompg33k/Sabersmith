@@ -1,0 +1,83 @@
+﻿@{
+    Layout = "~/admin/_adminlayout.cshtml";
+    Page.Title = "Manage Schedule";
+
+    var db = Database.Open("Sabersmith");
+
+    var scheduleItems = db.Query("SELECT * from schedule");
+
+    var schedGrid = new WebGrid(source: scheduleItems, rowsPerPage: 15);
+}
+
+<script>
+    $(function () {
+        $("#from").datepicker({
+            defaultDate: "+1w",
+            changeMonth: true,
+            numberOfMonths: 1,
+            showButtonPanel: true,
+            showOtherMonths: true,
+            selectOtherMonths: true,
+            onClose: function (selectedDate) {
+                $("#to").datepicker("option", "minDate", selectedDate);
+            }
+        });
+        $("#to").datepicker({
+            defaultDate: "+1w",
+            changeMonth: true,
+            numberOfMonths: 1,
+            showButtonPanel: true,
+            showOtherMonths: true,
+            selectOtherMonths: true,
+            onClose: function (selectedDate) {
+                $("#from").datepicker("option", "maxDate", selectedDate);
+            }
+        });
+    });
+</script>
+
+
+<div class="group">
+    <h2>Manage Schedule</h2>
+    <div>
+        <label for="from">From</label>
+        <input type="text" id="from" name="from" />
+        <label for="to">To</label>
+        <input type="text" id="to" name="to" />
+    </div>
+    <div>
+        <iframe src="https://www.google.com/calendar/embed?src=madcompg33k%40gmail.com&ctz=American/Phoenix" style="border: 0; width: 800px; height: 600px;" frameborder="0" scrolling="no"></iframe>
+    </div>
+    <div>
+        @schedGrid.GetHtml(
+            htmlAttributes: new {id="schedule"},
+            columns: schedGrid.Columns(
+                schedGrid.Column("ScheduleName",
+                    header: "Name",
+                    style: "col1",
+                    format: @<text>
+                                <span id="schedule-name" class="display-mode">@item.ScheduleItemName</span>
+                                @Html.TextBox("ScheduleItemName", item.ScheduleItemName, new {@class="edit-mode", size = 20})
+                            </text>
+                ),
+                schedGrid.Column("ScheduleDate",
+                    header: "Category",
+                    style: "col2",
+                    format: @<text>
+                                <span id="schedule-date" class="display-mode">@item.ScheduleItemDateTime</span>
+                                @Html.TextBox("ScheduleItemDate", item.ScheduleItemDate, new {@class="edit-mode", size = 20})
+                            </text>
+                ),
+                schedGrid.Column(
+                    style: "options",
+                    format:
+                        @<text>
+                            <button class="edit-product-option display-mode" id="@item.pk_OptionID">Edit</button>
+                            <button class="save-product-option edit-mode" id="@item.pk_OptionID">Save</button>
+                            <button class="cancel-edit edit-mode">Cancel</button>
+                        </text>
+                )
+            )
+        )
+    </div>
+</div>

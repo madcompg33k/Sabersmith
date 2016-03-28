@@ -1,0 +1,60 @@
+﻿@{
+    Layout = "~/admin/_adminlayout.cshtml";
+    Page.Title = "Manage Users";
+
+    var db = Database.Open("StarterSite");
+    var users = db.Query("SELECT * from UserProfile");
+    var grid = new WebGrid(source: users, rowsPerPage: 5);
+    db.Close();
+}
+
+
+<div class="group">
+    <h2>Manage Users</h2>
+    <div>
+        @grid.GetHtml(
+            columns: grid.Columns(
+                grid.Column("UserId"),
+                grid.Column("Email"),
+                grid.Column(
+                    format:
+                        @<text>
+                            <a href="#?id=@item.UserId">Modify</a>
+                            <a href="#?id=@item.UserId">Delete</a>
+                        </text>)
+            )
+        )
+    </div>
+    <div>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>E-Mail</th>
+                    <th>Options</th>
+                </tr>
+            </thead>
+            @if (users.Count() > 0){
+                foreach (var u in users) {
+                    <tr>
+                        <td>@u.UserId</td>
+                        <td>@u.Email</td>
+                        <td>
+                            <a href="#">Modify</a>
+                                @if(Roles.IsUserInRole(u.Email, "Admin")){
+                                    <a href="#">Make User</a>
+                                }
+                                @if(!Roles.IsUserInRole(u.Email, "Admin")){
+                                    <a href="#">Make Admin</a>
+                                }
+                        </td>
+                    </tr>
+                }
+            }else {
+                <tr>
+                    <td colspan="3">No users found.</td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>

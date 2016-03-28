@@ -1,0 +1,118 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Sabersmith, Inc. - @Page.Title</title>
+    <link href="~/content/themes/base/jquery.ui.all.css" rel="stylesheet" type="text/css" />
+    <link href="~/content/site.css" rel="stylesheet" type="text/css" />
+    <link href="~/content/products.css" rel="stylesheet" type="text/css" />
+    <link href="~/content/forum.css" rel="stylesheet" type="text/css" />
+    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <script src="~/scripts/jquery-1.9.1.min.js"></script>
+    <script src="~/scripts/jquery-ui-1.8.20.js"></script>
+    <script src="~/scripts/modernizr-2.5.3.js"></script>
+    <meta name="viewport" content="width=device-width" />
+
+    @if (Roles.IsUserInRole("Admin")){
+        //<!-- Required for Accordion to work properly -->
+        <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+        <script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
+        <link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" />
+        //<!-- End accordion requirements -->
+        <link href="~/admin/_admin.css" rel="stylesheet" type="text/css" />
+        <script src="~/scripts/admin.js"></script>
+    }
+
+    
+</head>
+<body>
+
+    <header>
+        <div class="content-wrapper">
+            <div>
+                <p class="site-title"><a href="~/">Sabersmith, Inc.</a> - @Page.Title</p>
+            </div>
+            <div>
+                <section id="login">
+                    @if (WebSecurity.IsAuthenticated) {
+                        <text>
+                            <!-- Check for administrator user type -->
+                            @if (Roles.IsUserInRole("Admin")){
+                                <div id="adminMenu">
+                                    <header>
+                                        <a href="#" id="admin">Site Administration <span id="downArrow">▼</span><span id="upArrow">▲</span></a>
+                                    </header>
+                                    <nav>
+                                        <ul id="menu">
+                                            <li><a href="~/admin/manageusers">Manage Users</a></li>
+                                            <li><a href="~/admin/manageproducts">Manage Products</a></li>
+                                            <li><a href="~/admin/manageschedule">Manage Schedule</a></li>
+                                            <li><a href="~/admin">Manage Media</a></li>
+                                        </ul>
+                                    </nav>
+                                </div>
+                            }
+
+                            <a class="email" href="~/Account/Manage" title="Manage">@WebSecurity.CurrentUserName</a>
+                            
+                            <form id="logoutForm" action="~/Account/Logout" method="post">
+                                @AntiForgery.GetHtml()
+                                <a href="javascript:document.getElementById('logoutForm').submit()">Log out</a>
+                            </form>
+                            
+                            
+                        </text>
+                    } else {
+                        <ul>
+                            @*<li><a href="~/Account/Register">Register</a></li>*@
+                            <li><a href="~/Account/Login">Log in</a></li>
+                        </ul>
+                    }
+                </section>
+                <nav>
+                    <ul id="menu">
+                        <li @if (Page.Title == "Home") {<text>class="current-page"</text>} ><a href="~/">Home</a></li>
+                        <li @if (Page.Title == "Products") {<text>class="current-page"</text>} ><a href="~/products">Products</a></li>
+                        <li @if (Page.Title == "Custom") {<text>class="current-page"</text>} ><a href="~/" style="color: #a0a0a0;">[Custom Weapon Designer]</a></li>
+                        <!-- li @if (Page.Title == "Forums") {<text>class="current-page"</text>} ><a href="~/forum">Forums</a></li -->
+                        <li @if (Page.Title == "Festivals & Faires") {<text>class="current-page"</text>} ><a href="~/festivals">Festivals & Faires</a></li>
+                        <li @if (Page.Title == "Media") {<text>class="current-page"</text>} ><a href="~/" style="color: #a0a0a0;">[Media Gallery]</a></li>
+                        <li @if (Page.Title == "About") {<text>class="current-page"</text>} ><a href="~/about">About Us</a></li>
+                        <li @if (Page.Title == "Contact") {<text>class="current-page"</text>} ><a href="~/contact">Contact</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+
+    <div id="body">
+        @RenderSection("featured", required: false)
+        <section class="content-wrapper main-content clear-fix">
+            @RenderBody()
+        </section>
+    </div>
+
+
+    <footer>
+        <div class="content-wrapper">
+            <div>
+                <p>
+                    Sabersmith, Inc.
+			        <br />
+			        87 Grand Ledge Hwy
+			        <br />
+			        Mulliken, MI 48861
+			        <br />
+			        (517) 649-0339
+                </p>
+                <p>&copy; @DateTime.Now.Year - Sabersmith, Inc.</p>
+            </div>
+        </div>
+    </footer>
+
+
+    @RenderSection("Scripts", required: false)
+
+</body>
+</html>

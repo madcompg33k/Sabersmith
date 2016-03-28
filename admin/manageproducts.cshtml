@@ -1,0 +1,327 @@
+﻿@{
+    Layout = "~/admin/_adminlayout.cshtml";
+    Page.Title = "Manage Products";
+    
+    var db = Database.Open("Sabersmith");
+
+    var products = db.Query(@"SELECT p.pk_ProductID, p.ProductName, p.fk_CategoryID, p.fk_SubCategoryID,
+                        p.UnitPrice, p.UnitsOnOrder, p.Discontinued, c.CategoryName, sc.SubCategoryName
+                        FROM products p
+                        INNER JOIN categories c
+                        ON p.fk_CategoryID = c.pk_CategoryID
+                        INNER JOIN sub_categories sc
+                        ON p.fk_SubCategoryID = sc.pk_SubCategoryID
+                        ORDER BY Discontinued ASC, CategoryName ASC, SubCategoryName ASC, ProductName ASC");
+
+    var productOptions = db.Query("SELECT * from product_options");
+    var productColors = db.Query("SELECT * from product_sub_options_items");
+
+    var categories = db.Query("SELECT * from categories");
+    var subCategories = db.Query(@"SELECT sc.pk_SubCategoryID, sc.fk_CategoryID, sc.SubCategoryName, sc.SubCategoryDesc, c.CategoryName
+                                FROM sub_categories sc
+                                INNER JOIN categories c
+                                ON sc.fk_CategoryID = c.pk_CategoryID
+                                ORDER BY CategoryName ASC, SubCategoryName ASC");
+    
+    /* Make list of all product option categories */
+    var optionCategoriesList = db.Query("SELECT pk_CategoryID, CategoryName FROM categories")
+                            .Select(category => new SelectListItem {
+                                Value = category.pk_CategoryID.ToString(),
+                                Text = category.CategoryName
+                            });
+
+    /* Make list of all categories */
+    var categoriesList = db.Query("SELECT pk_CategoryID, CategoryName FROM categories")
+                            .Select(category => new SelectListItem {
+                                Value = category.pk_CategoryID.ToString(),
+                                Text = category.CategoryName
+                            });
+    
+    /* Make list of all sub-categories */
+    var subCategoriesList = db.Query("SELECT pk_SubCategoryID, SubCategoryName FROM sub_categories")
+                            .Select(category => new SelectListItem {
+                                Value = category.pk_SubCategoryID.ToString(),
+                                Text = category.SubCategoryName
+                            });
+    
+
+    var prodGrid = new WebGrid(source: products, rowsPerPage: 15);
+    var prodOptionsGrid = new WebGrid(source: productOptions, rowsPerPage: 15);
+    var catGrid = new WebGrid(source: categories, rowsPerPage: 15);
+    var subCatGrid = new WebGrid(source: subCategories, rowsPerPage: 15);
+
+
+    //var productAdded = Request["Added"] != null;
+    //var productChanged = Request["Changed"] != null;
+}
+
+
+<style>
+    .group{zoom: 1;}
+    
+    /*label, input{display: block;}
+    input.text{margin-bottom: 12px; width: 95%; padding: .4em;}
+    fieldset{padding: 0; border: 0; margin-top: 25px}*/
+    /*div#categories{width: 350px;margin: 20px 0;}
+    div#categories table{margin: 1em 0; border-collapse: collapse; width: 100%;}
+    div#categories table td, div#categories table th{border: 1px solid #eee; padding: .6em 10px; text-align: left}*/
+    .ui-dialog .ui-state-error{padding: .3em;}
+    .validateTips{border: 1px solid transparent; padding: 0.3em;}
+</style>
+
+
+<!-- if (productAdded){<p><span style="font-weight:  700;">Product Successfully Added!</span></p>}
+if (productChanged){<p><span style="font-weight:  700;">Product Successfully Modified!</span></p>} -->
+
+<div id="accordion">
+    <div class="group">
+        <h2>
+            Products
+            <a id="addProduct" class="addNewProduct" href="~/admin/addproduct">(Add New)</a><!--href="~/admin/addproduct"-->
+            <span class="subtext">Click on the product name to edit all product details.</span>
+            <!-- span class="search float-right">
+                <label for="search">Search:</label>
+                <input type="text" id="search" name="search" class="search" />
+                <input type="button" value="Search" />
+            </span -->
+        </h2>
+        <div>
+            @prodGrid.GetHtml(
+                htmlAttributes: new {id="products"},
+                tableStyle: "table",
+                alternatingRowStyle: "alternate",
+                selectedRowStyle: "selected",
+                headerStyle: "header",
+                columns: prodGrid.Columns(
+                    prodGrid.Column("ProductName",
+                        header: _functions.Sorter("ProductName", "Name", prodGrid),
+                        style: "col1",
+                        format: @<text>
+                                    <span class="display-mode"><a id="product-name" href="~/admin/modifyproduct/@item.pk_ProductID">@item.ProductName</a></span>
+                                    @Html.TextBox("ProductName", item.ProductName, new {@class="edit-mode", size = 20})
+                                </text>
+                    ),
+                    prodGrid.Column("fk_CategoryID",
+                        header: _functions.Sorter("fk_CategoryID", "Category", prodGrid),
+                        style: "col2",
+                        format:
+                            @<text>
+                                <span id="category" class="display-mode">@item.CategoryName</span>
+                                @Html.DropDownList("CategoryId", null, categoriesList, item.fk_CategoryID, new {@class="edit-mode"})
+                            </text>
+                    ),
+                    prodGrid.Column("fk_SubCategoryID",
+                        header: _functions.Sorter("fk_SubCategoryID", "Sub-Category", prodGrid),
+                        style: "col3",
+                        format:
+                            @<text>
+                                <span id="sub-category" class="display-mode">@item.SubCategoryName</span>
+                                @Html.DropDownList("SubCategoryId", null, subCategoriesList, item.fk_SubCategoryID, new {@class="edit-mode"})
+                            </text>
+                    ),
+                    prodGrid.Column("UnitPrice",
+                        header: _functions.Sorter("UnitPrice", "Price", prodGrid),
+                        style: "col4",
+                        format: @<text>
+                                    <span id="price" class="display-mode">$@item.UnitPrice.ToString("0.00")</span>
+                                    @Html.TextBox("UnitPrice", item.UnitPrice.ToString("0.00"), new {@class="edit-mode", size = 5})
+                                </text>
+                    ),
+                    prodGrid.Column("UnitsOnOrder",
+                        header: _functions.Sorter("UnitsOnOrder", "UnitsOnOrder", prodGrid),
+                        style: "col5",
+                        format: @<text>
+                                    <span id="on-order" class="display-mode">@item.UnitsOnOrder</span>
+                                    @Html.TextBox("UnitsOnOrder", item.UnitsOnOrder, new {@class="edit-mode", size = 5})
+                                </text>
+                    ),
+                    prodGrid.Column("Discontinued",
+                        header: _functions.Sorter("Discontinued", "Discontinued", prodGrid),
+                        style: "col6",
+                        format: @<text>
+                                    <input type="checkbox" id="discontinued" class="display-mode" disabled @if (item.Discontinued == true){<text>checked</text>} />
+                                    @Html.CheckBox("Discontinued", item.Discontinued, new {@class="edit-mode"})
+                                </text>
+                    ),
+                    prodGrid.Column(
+                        style: "options",
+                        format:
+                            @<text>
+                                <button class="edit-product display-mode" id="@item.pk_ProductID">Edit</button>
+                                <button class="save-product edit-mode" id="@item.pk_ProductID">Save</button>
+                                <button class="cancel-edit edit-mode">Cancel</button>
+                            </text>)
+                )
+            )
+        </div>
+    </div>
+    
+    <div class="group">
+        <h2>
+            Product Options
+            <a id="addProductOption" class="" href="#">(Add New)</a>
+            <!-- span class="search">
+                <label for="search">Search:</label>
+                <input type="text" id="search" name="search" class="search" />
+                <input type="button" value="Search" />
+            </span -->
+        </h2>
+        <div>
+            @prodOptionsGrid.GetHtml(
+                htmlAttributes: new {id="productOptions"},
+                columns: catGrid.Columns(
+                    prodOptionsGrid.Column("OptionName",
+                        header: "Name",
+                        style: "col1",
+                        format: @<text>
+                                    <span id="option-name" class="display-mode">@item.OptionName</span>
+                                    @Html.TextBox("OptionName", item.OptionName, new {@class="edit-mode", size = 20})
+                                </text>
+                    ),
+                    prodOptionsGrid.Column("OptionCategory",
+                        header: "Category",
+                        style: "col2",
+                        format: @<text>
+                                    <span id="option-category" class="display-mode">@item.fk_OptionCategory</span>
+                                    @Html.DropDownList("OptionCategory", null, optionCategoriesList, item.fk_OptionCategoryID, new {@class="edit-mode"})
+                                </text>
+                    ),
+                    prodOptionsGrid.Column("OptionDesc",
+                        header: "Description",
+                        style: "col3",
+                        format: @<text>
+                                    <span id="option-desc" class="display-mode">@item.OptionDesc</span>
+                                    @Html.TextBox("OptionDesc", item.OptionDesc, new {@class="edit-mode", size = 50})
+                                </text>
+                    ),
+                    prodOptionsGrid.Column(
+                        style: "options",
+                        format:
+                            @<text>
+                                <button class="edit-product-option display-mode" id="@item.pk_OptionID">Edit</button>
+                                <button class="save-product-option edit-mode" id="@item.pk_OptionID">Save</button>
+                                <button class="cancel-edit edit-mode">Cancel</button>
+                            </text>
+                    )
+                )
+            )
+        </div>
+    </div>
+
+    <div class="group">
+        <h2>
+            Categories
+            <a id="addCategory" class="" href="#">(Add New)</a>
+            <!-- span class="search">
+                <label for="search">Search:</label>
+                <input type="text" id="search" name="search" class="search" />
+                <input type="button" value="Search" />
+            </span -->
+        </h2>
+        <div>
+            @catGrid.GetHtml(
+                htmlAttributes: new {id="categories"},
+                columns: catGrid.Columns(
+                    catGrid.Column("CategoryName",
+                        header: "Name",
+                        style: "col1",
+                        format: @<text>
+                                    <span id="category-name" class="display-mode">@item.CategoryName</span>
+                                    @Html.TextBox("CategoryName", item.CategoryName, new {@class="edit-mode", size = 20})
+                                </text>
+                    ),
+                    catGrid.Column("CategoryDesc",
+                        header: "Description",
+                        style: "col2",
+                        format: @<text>
+                                    <span id="category-desc" class="display-mode">@item.CategoryDesc</span>
+                                    @Html.TextBox("CategoryDesc", item.CategoryDesc, new {@class="edit-mode", size = 50})
+                                </text>
+                    ),
+                    catGrid.Column(
+                        style: "options",
+                        format:
+                            @<text>
+                                <button class="edit-category display-mode" id="@item.pk_CategoryID">Edit</button>
+                                <button class="save-category edit-mode" id="@item.pk_CategoryID">Save</button>
+                                <button class="cancel-edit edit-mode">Cancel</button>
+                            </text>
+                    )
+                )
+            )
+        </div>
+    </div>
+
+    
+    <div id="sub-categories" class="group">
+        <h2>
+            Sub-Categories
+            <a id="addSubCategory" href="#">(Add New)</a>
+            <!-- span class="search float-right">
+                <label for="search">Search:</label>
+                <input type="text" id="search" name="search" class="search" />
+                <input type="button" value="Search" />
+            </span -->
+        </h2>
+        <div>
+            @subCatGrid.GetHtml(
+                htmlAttributes: new {id="subCategories"},
+                columns: subCatGrid.Columns(
+                    subCatGrid.Column("SubCategoryName",
+                        header: "Name",
+                        style: "col1",
+                        format: @<text>
+                                    <span id="sub-category-name" class="display-mode">@item.SubCategoryName</span>
+                                    @Html.TextBox("SubCategoryName", item.SubCategoryName, new {@class="edit-mode", size = 20})
+                                </text>
+                    ),
+                    subCatGrid.Column("CategoryName",
+                        header: "Group",
+                        style: "col2",
+                        format:
+                            @<text>
+                                <span id="sub-category-group" class="display-mode">@item.CategoryName</span>
+                                @Html.DropDownList("SubCategoryGroup", null, categoriesList, item.fk_CategoryID, new {@class="edit-mode"})
+                            </text>
+                    ),
+                    subCatGrid.Column("SubCategoryDesc",
+                        header: "Description",
+                        style: "col3",
+                        format: @<text>
+                                    <span id="sub-category-desc" class="display-mode">@item.SubCategoryDesc</span>
+                                    @Html.TextBox("SubCategoryDesc", item.SubCategoryDesc, new {@class="edit-mode", size = 20})
+                                </text>
+                    ),
+                    subCatGrid.Column(
+                        style: "options",
+                        format:
+                            @<text>
+                                <button class="edit-sub-category display-mode" id="@item.pk_SubCategoryID">Edit</button>
+                                <button class="save-sub-category edit-mode" id="@item.pk_SubCategoryID">Save</button>
+                                <button class="cancel-edit edit-mode">Cancel</button>
+                            </text>
+                    )
+                )
+            )
+        </div>
+    </div>
+</div>
+
+
+<div id="optionDialog" title="Add Product Option">
+    <p class="optionValidateTips">All form fields are required.</p>
+    @RenderPage("~/admin/_addproductoption.cshtml")
+</div>
+
+<div id="categoryDialog" title="Add Category">
+    <p class="catValidateTips">All form fields are required.</p>
+    @RenderPage("~/admin/_addcategory.cshtml")
+</div>
+
+<div id="subCategoryDialog" title="Add Sub-Category">
+    <p class="subCatValidateTips">All form fields are required.</p>
+    @RenderPage("~/admin/_addsubcategory.cshtml")
+</div>
+
+<input type="hidden" id="categoryId" value="@categories.Count()" />
+<input type="hidden" id="subCategoryId" value="@subCategories.Count()" />

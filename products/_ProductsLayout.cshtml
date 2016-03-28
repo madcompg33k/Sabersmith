@@ -1,0 +1,45 @@
+﻿@{
+    Layout = "~/_SiteLayout.cshtml";
+
+    var db = Database.Open("Sabersmith");
+    var categories = "SELECT * from categories";
+    var subcategories = "SELECT * from sub_categories";
+    db.Close();
+}
+
+
+<!-- #Start Products Side Menu -->
+<!-- Eventually only show sub-category/etc. after someone has chosen a primary category -->
+<nav id="products-smenu">
+    <h3>Categories</h3>
+    <ul id="menu">
+        @foreach(var row in db.Query(categories)){
+                <text><li><a href="~/products/@row.CategoryName ">@row.CategoryName</a></li></text>
+        }
+        <!-- li><a href="~/products/#Accessories">Accessories</a></li>
+        <li><a href="~/products/#Weapons">Weapons</a></li -->
+    </ul>
+
+    <h3>Sub-Categories</h3>
+    <ul id="menu">
+        @foreach(var row in db.Query(subcategories)){
+                <text><li><a href="~/products/#@row.SubCategoryName ">@row.SubCategoryName</a></li></text>
+        }
+        <!-- li><a href="~/products/#Swords (European)">Swords (European)</a></li>
+        <li><a href="~/products/#Swords (Eastern)">Swords (Eastern)</a></li>
+        <li><a href="~/products/#Daggers">Daggers</a></li>
+        <li><a href="~/products/#Throwers">Throwers</a></li>
+        <li><a href="~/products/#Axes">Axes</a></li>
+        <li><a href="~/products/#Polearms">Polearms</a></li>
+        <li><a href="~/products/#Hammers">Hammers</a></li>
+        <li><a href="~/products/#Maces">Maces</a></li>
+        <li><a href="~/products/#Scabbards">Scabbards</a></li>
+        <li><a href="~/products/#Other">Other</a></li -->  
+    </ul>
+</nav>
+<!-- #End Products Side Menu -->
+
+
+<section id="products">
+@RenderBody()
+</section>

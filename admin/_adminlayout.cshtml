@@ -1,0 +1,13 @@
+﻿@{
+    Layout = "~/_SiteLayout.cshtml";
+
+    // Is an Administrator, show administrative options
+    if(Roles.IsUserInRole("Admin"))
+    {
+        @RenderBody()   
+    }
+    // Not an Administrator, redirect to home page
+    else{Response.Redirect("~/");}
+}
+
+

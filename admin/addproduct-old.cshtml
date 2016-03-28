@@ -1,0 +1,242 @@
+﻿@using System.Data.SqlClient;
+@using System.Configuration;
+
+@{
+    Layout = "~/admin/_adminlayout.cshtml";
+    Page.Title = "Site Administration - Add Product";
+
+    var db = Database.Open("Sabersmith");
+    var categories = "SELECT * from categories";
+    var sub_categories = "SELECT * from sub_categories";
+    db.Close();
+
+    // Setup validation
+    Validation.RequireField("productName", "You must specify an product name.");
+    Validation.RequireField("productCategory", "You must specify a category.");
+    Validation.RequireField("productSubCategory", "You must specify a sub-category.");
+    Validation.RequireField("productPrice", "You must specify a price.");
+    Validation.RequireField("productShippingWeight", "You must specify a shipping weight.");
+    Validation.RequireField("productTimeRequired", "You must specify the time required to create.");
+    Validation.RequireField("productURLName", "You must specify a URL name. (The name of the folder in which the images will exist)");
+    Validation.RequireField("productIMGPath", "You must specify a IMG Path. (The base location in which your folders for products are stored)");
+
+    if (IsPost && Validation.IsValid()) {
+        var name = Request["productName"];
+        var description = Request["productDescription"];
+        var category = Request["productCategory"];
+        var subCategory = Request["productSubCategory"];
+        var qty = Request["productQty"];
+        var price = Request["productPrice"];
+        var overallLength = Request["productOverallLength"];
+        var bladeLength = Request["productBladeLength"];
+        var shippingWeight = Request["productShippingWeight"];
+        var timeReq = Request["productTimeRequired"];
+        var canModify = Request["productCanModify"] == "on" ? true : false;
+        var urlName= Request["productURLName"];
+        var imgPath = Request["productIMGPath"];
+        var bladeLength2 = Request["productBladeLength2"];
+        var bladeLength3 = Request["productBladeLength3"];
+
+
+        
+        try {
+        
+        
+            var db2 = Database.Open("Sabersmith");
+            string sql = "Execute sp_AddProduct @0, @1, @2, @3, @4, @5, @6, @7, @8, @9, @10, @11, @12, @13, @14, @15, @16, @17";
+            db2.Execute(sql, category, subCategory, name, description, overallLength, bladeLength, shippingWeight, canModify, qty, price, timeReq, 0, false, urlName, imgPath, WebSecurity.CurrentUserId, bladeLength2, bladeLength3);
+            db2.Close();
+            /*
+            string CS = ConfigurationManager.ConnectionStrings["Sabersmith"].ConnectionString;
+            using(SqlConnection con = new SqlConnection(CS))
+            {
+                SqlCommand cmd = new SqlCommand("sp_AddProduct", con);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+                cmd.Parameters.AddWithValue("@p_CategoryID", category);
+                cmd.Parameters.AddWithValue("@p_SubCategoryID", subCategory);
+                cmd.Parameters.AddWithValue("@p_ProductName", name);
+                cmd.Parameters.AddWithValue("@p_ProductDesc", description);
+                cmd.Parameters.AddWithValue("@p_OverallLength", overallLength);
+                cmd.Parameters.AddWithValue("@p_BladeLength", bladeLength);
+                cmd.Parameters.AddWithValue("@p_ShippingWeight", shippingWeight);
+                cmd.Parameters.AddWithValue("@p_CanModify", canModify);
+                cmd.Parameters.AddWithValue("@p_QtyPerUnit", qty);
+                cmd.Parameters.AddWithValue("@p_UnitPrice", price);
+                cmd.Parameters.AddWithValue("@p_TimeReq", timeReq);
+                cmd.Parameters.AddWithValue("@p_UnitsOnOrder", 0);
+                cmd.Parameters.AddWithValue("@p_Discontinued", false);
+                cmd.Parameters.AddWithValue("@p_URLName", urlName);
+                cmd.Parameters.AddWithValue("@p_IMGPath", imgPath);
+
+                con.Open();
+                cmd.ExecuteNonQuery();
+            }
+            */
+            
+            Response.Redirect("~/admin/manageproducts?Added=true");
+            
+        } catch {
+            ModelState.AddFormError("There was an error and your order could not be processed at this time");
+            
+        }
+
+    }
+
+}
+
+<script>
+    $(function ()
+    {
+        $(document).tooltip();
+    });
+</script>
+
+<form id="add-product" action="" method="post">
+    @Html.ValidationSummary(excludeFieldErrors: true)
+
+    <h2>Add Product</h2>
+
+    <ul class="orderPageList" data-role="listview">
+
+        <li class="name">
+            <div class="fieldcontainer" data-role="fieldcontain">
+                <label for="productName">Name *</label>
+                <input type="text" id="productName" class="productField" name="productName" @Validation.For("productName") />
+                <div>@Html.ValidationMessage("productName")</div>
+            </div>
+        </li>
+
+        <li class="description">
+            <div class="fieldcontainer" data-role="fieldcontain">
+                <label for="productDescription">Description</label>
+                <textarea id="productDescription" class="productField" name="productDescription"></textarea>
+            </div>
+        </li>
+
+        <li class="category">
+            <div class="fieldcontainer" data-role="fieldcontain">
+                <label for="productCategory">Category *</label>
+                <select id="productCategory" class="productField" name="productCategory" @Validation.For("productCategory")>
+                    @foreach(var row in db.Query(categories)){
+                        <option value="@row.pk_CategoryID">@row.CategoryName</option>
+                    }
+                </select>
+                <div>@Html.ValidationMessage("productCategory")</div>
+            </div>
+        </li>
+
+        <li class="subCategory">
+            <div class="fieldcontainer" data-role="fieldcontain">
+                <label for="productSubCategory">Sub-Category *</label>
+                <select id="productSubCategory" class="productField" name="productSubCategory" @Validation.For("productSubCategory")>
+                    @foreach(var row in db.Query(sub_categories)){
+                        <option value="@row.pk_SubCategoryID">@row.SubCategoryName</option>
+                    }
+                </select>
+                <div>@Html.ValidationMessage("productSubCategory")</div>
+            </div>
+        </li>
+
+        <li class="qty">
+            <div class="fieldcontainer" data-role="fieldcontain">
+                <label for="productQty">Qty/Unit</label>
+                <input type="text" id="productQty" class="productField" name="productQty" value="1"
+                       title="Quantity of items per order. (Such as 3-pack of kunai)" />
+            </div>
+        </li>
+
+        <li class="price">
+            <div class="fieldcontainer" data-role="fieldcontain">
+                <label for="productPrice">Price *</label>
+                <input type="text" id="productPrice" class="productField" name="productPrice" @Validation.For("productPrice") />
+                <div>@Html.ValidationMessage("productPrice")</div>
+            </div>
+        </li>
+
+        <li class="overallLength">
+            <div class="fieldcontainer" data-role="fieldcontain">
+                <label for="productOverallLength">Overall Length</label>
+                <input type="text" id="productOverallLength" class="productField" name="productOverallLength"
+                       title="(Optional) Overall length of product (in inches)." />
+            </div>
+        </li>
+
+        <li class="bladeLength">
+            <div class="fieldcontainer" data-role="fieldcontain">
+                <label for="productBladeLength">Blade Length</label>
+                <input type="text" id="productBladeLength" class="productField" name="productBladeLength"
+                       title="(Optional) Length of blade (in inches), if product is a weapon." />
+            </div>
+        </li>
+
+        <li class="bladeLength2">
+                <div class="fieldcontainer" data-role="fieldcontain">
+                    <label for="productBladeLength2">Secondary Blade Length</label>
+                    <input type="text" id="productBladeLength2" class="productField" name="productBladeLength2" 
+                        title="(Optional) Length of secondary blade (in inches), if product is a weapon."/>
+                </div>
+            </li>
+
+            <li class="bladeLength3">
+                <div class="fieldcontainer" data-role="fieldcontain">
+                    <label for="productBladeLength3">Tertiary Blade Length</label>
+                    <input type="text" id="productBladeLength3" class="productField" name="productBladeLength3"
+                        title="(Optional) Length of tertiary blade (in inches), if product is a weapon."/>
+                </div>
+            </li>
+
+        <li class="shippingWeight">
+            <div class="fieldcontainer" data-role="fieldcontain">
+                <label for="productShippingWeight">Shipping Weight *</label>
+                <input type="text" id="productShippingWeight" class="productField" name="productShippingWeight" @Validation.For("productShippingWeight") />
+                <div>@Html.ValidationMessage("productShippingWeight")</div>
+            </div>
+        </li>
+
+        <li class="timeRequired">
+            <div class="fieldcontainer" data-role="fieldcontain">
+                <label for="productTimeRequired">Manufacture Time (in hrs)</label>
+                <input type="text" id="productTimeRequired" class="productField" name="productTimeRequired" value="24" @Validation.For("productTimeRequired")
+                title="(Optional) The approximate time it takes to product the item, in hours. (max 255)" />
+                <div>@Html.ValidationMessage("productTimeRequired")</div>
+            </div>
+        </li>
+
+        <li class="canModify">
+            <div class="fieldcontainer" data-role="fieldcontain">
+                <label for="productCanModify">Can Modify?</label>
+                <input type="checkbox" id="productCanModify" class="productField" name="productCanModify" checked
+                       title="Whether or not the product has modifications available (e.g. grip types, etc.)" />
+            </div>
+        </li>
+
+        <li class="urlName">
+            <div class="fieldcontainer" data-role="fieldcontain">
+                <label for="productURLName">URL Name *</label>
+                <input type="text" id="productURLName" class="productField" name="productURLName" @Validation.For("productURLName") 
+                    title="The name used by the browser, which should not have any spaces. (This will also be the folder name you will create/add images to
+                           for the site to recognize. For example, if your IMGPath is /products/images, and your URLName is axehilt, the website will look in
+                           /products/images/axehilt/ for the images it needs to use)"/>
+                <div>@Html.ValidationMessage("productURLName")</div>
+            </div>
+        </li>
+
+        <li class="imgPath">
+            <div class="fieldcontainer" data-role="fieldcontain">
+                <label for="productURLName">IMG Path *</label>
+                <input type="text" id="productIMGPath" class="productField" name="productIMGPath" value="/products/images" @Validation.For("productIMGPath")
+                    title="The base location in which your folders for products are stored, excluding the final folder's '/'. (e.g. /products/images)" />
+                <div>@Html.ValidationMessage("productIMGPath")</div>
+            </div>
+        </li>
+    </ul>
+
+    <p class="actions">
+        <input type="submit" value="Add Product" data-role="none" data-inline="true" />
+        <input type="button" value="Cancel" />
+    </p>
+</form>
+
+<div id="whatsInfo">
+</div>

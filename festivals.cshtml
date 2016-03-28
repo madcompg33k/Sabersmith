@@ -1,0 +1,199 @@
+﻿@{
+    Layout = "~/_SiteLayout.cshtml";
+    Page.Title = "Festivals & Faires";
+}
+
+<script type="text/javascript">
+    /* Set default previous festival to the last */
+    var previousFestival = 5;
+
+    /* Set default festival to 1 */
+    var currentFestival = 1;
+
+    /* Set default next festival */
+    var nextFestival = 2;
+
+
+    $(function (changeFestival)
+    {
+        $("#festivals-wrapper").mouseover(function ()
+        {
+            $(".border").css("display", "block");
+        });
+
+        $(".border").mouseover(function ()
+        {
+            $(".border").css("display", "block");
+        });
+
+        $("#festivals-wrapper").mouseout(function ()
+        {
+            $(".border").css("display", "none");
+        });
+
+        $(".border").mouseout(function ()
+        {
+            $(".border").css("display", "none");
+        });
+
+        $("#right").click(function ()
+        {
+            var nextFestival = currentFestival + 1;
+
+            /* Clear the previous bullet */
+            $("#b" + currentFestival).attr({ src: "/images/bulletw-empty.png" });
+
+            /* Check to make sure we haven't reached the end */
+            if ($("#" + (currentFestival + 1)).length > 0)
+            {
+                $("#b" + nextFestival).attr({ src: "/images/bulletw-filled.png" });
+            } else
+            {
+                /* Reached the end, set next festival to the first */
+                nextFestival = 1;
+
+                /* Fill the first bullet since there is no next */
+                $("#b1").attr({ src: "/images/bulletw-filled.png" });
+            }
+
+            /* Animate our scrolling */
+            animateScroll(nextFestival);
+
+            /* Change the current festival to the next */
+            currentFestival = nextFestival;
+        });
+
+        $("#left").click(function ()
+        {
+            previousFestival = currentFestival - 1;
+
+            /* Clear the previous bullet */
+            $("#b" + currentFestival).attr({ src: "/images/bulletw-empty.png" });
+
+            /* Check to make sure we haven't reached the end */
+            if ($("#" + (currentFestival - 1)).length > 0)
+            {
+                $("#b" + previousFestival).attr({ src: "/images/bulletw-filled.png" });
+            } else
+            {
+                /* Reached the first festival, set previous to the last festival */
+                previousFestival = 5;
+
+                /* Fill the last bullet since there is no previous */
+                $("#b5").attr({ src: "/images/bulletw-filled.png" });
+            }
+
+            /* Animate our scrolling */
+            animateScroll(previousFestival);
+
+            /* Change the current festival to the previous */
+            currentFestival = previousFestival;
+        });
+
+        $(".bulletLink").click(function ()
+        {
+            /* Find what festival the user is currently on */
+            var oldFestival = currentFestival;
+
+            /* Set currentFestival to the newly selected festival */
+            currentFestival = parseInt($(this).attr("id").split("")[1], 10);
+
+            /* Clear bullet from previous festival */
+            $("#b" + oldFestival).attr({ src: "/images/bulletw-empty.png" })
+
+            /* Set to current bullet to the newly selected festival */
+            $("#b" + currentFestival).attr({ src: "/images/bulletw-filled.png" })
+
+            /* Animate our scrolling */
+            animateScroll(currentFestival);
+        });
+
+
+        function animateScroll(festival)
+        {
+            /* Animate our scrolling */
+            $("#scroll-x").stop().animate(
+            {
+                scrollLeft: ((festival - 1) * 900)
+            }, 1000, 'easeInOutExpo');
+        }
+
+    }); /* END $function(changeFestival) */
+        </script>
+
+
+<section id="festivals-slide">
+    <a href="#" id="left" class="border"><img src="~/images/arrow-left.png" alt="&lt;" /></a>
+    <a href="#" id="right" class="border"><img src="~/images/arrow-right.png" alt="&gt;" /></a>
+    
+    <div id="scroll-x">
+        <div id="festivals-wrapper">
+            <div id="1" class="festival">
+                <a href="#"><img src="~/images/old_site/arizonabooth.png" alt="AZ" /></a>
+                <aside>
+                    <h3>Arizona Renaissance Faire (2013)</h3>
+                    <p>February 9 - March 31</p>
+                    <p>Booth #306</p>
+                    <p>
+                        Located just southeast of Phoenix, AZ, the Arizona Renaissance Festival is one
+                        of the largest of the Renaissance events in the nation because it is really five
+                        festivals all rolled one.
+                    </p>
+                </aside>
+            </div>
+            <div id="2" class="festival">
+                <a href="#"><img src="~/images/old_site/bostonbooth.png" alt="Boston" /></a>
+                <aside>
+                    <h3>Boston Renaissance Faire (2013)</h3>
+                    <p>August 31 - October 20</p>
+                    <p>
+                        Entertainment, exciting rides and skill games abound on the enchanting 80-acre
+                        site of King Richard's Faire. Hundreds of talented entertainers perform non-stop
+                        throughout the day.
+                    </p>
+                </aside>
+            </div>
+            <div id="3" class="festival">
+                <a href="#"><img src="~/images/old_site/bristolbooth.png" alt="Bristol" /></a>
+                <aside>
+                    <h3>Bristol Renaissance Faire (2013)</h3>
+                    <p>July 6 - September 2</p>
+                    <p>Booth #130</p>
+                    <p>
+                        Located about 30m from Milwaukee, 50m from Chicago or about 2hrs 15m from Madison,
+                        visitors can take a rollicking romp through Elizabethan England, complete with 16th
+                        Century games, rides, arts, crafts, food, music, and one-of-a-kind encounters with a
+                        spectacular cast of characters.
+                    </p>
+                </aside>
+            </div>
+            <div id="4" class="festival">
+                <a href="#"><img src="~/images/old_site/georgiabooth.png" alt="GA" /></a>
+                <aside>
+                    <h3>Georgia Renaissance Faire (2013)</h3>
+                    <p>April 13 - June 2</p>
+                    <p>
+                        Description
+                    </p>
+                </aside>
+            </div>
+            <div id="5" class="festival">
+                <a href="#"><img src="~/images/old_site/michiganbooth.png" alt="MI" /></a>
+                <aside>
+                    <h3>Michigan Renaissance Faire (2013)</h3>
+                    <p>August 17 - September 29</p>
+                    <p>
+                        Description
+                    </p>
+                </aside>
+            </div>
+        </div>
+    </div>
+    <div id="bullets">
+        <a id="a1" href="#" class="bulletLink"><img id="b1" src="~/images/bulletw-filled.png" class="bullet" alt="bullet" /></a>
+        <a id="a2" href="#" class="bulletLink"><img id="b2" src="~/images/bulletw-empty.png" class="bullet" alt="bullet" /></a>
+        <a id="a3" href="#" class="bulletLink"><img id="b3" src="~/images/bulletw-empty.png" class="bullet" alt="bullet" /></a>
+        <a id="a4" href="#" class="bulletLink"><img id="b4" src="~/images/bulletw-empty.png" class="bullet" alt="bullet" /></a>
+        <a id="a5" href="#" class="bulletLink"><img id="b5" src="~/images/bulletw-empty.png" class="bullet" alt="bullet" /></a>
+    </div>
+</section>

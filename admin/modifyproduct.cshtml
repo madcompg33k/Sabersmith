@@ -1,0 +1,267 @@
+﻿@using System.Data.SqlClient;
+@using System.Configuration;
+
+@{
+    Layout = "~/admin/_adminlayout.cshtml";
+    Page.Title = "Site Administration - Add Product";
+
+    var db = Database.Open("Sabersmith");
+
+    var productId = UrlData[0];
+    var currentProduct = db.QuerySingle("SELECT * FROM products WHERE pk_ProductID = @0", productId);
+
+    var currentCategory = currentProduct.fk_CategoryID;
+    var currentSubCategory = currentProduct.fk_SubCategoryID;
+    var categories = "SELECT * from categories";
+    var sub_categories = "SELECT * from sub_categories";
+    db.Close();
+
+    var usersDB = Database.Open("StarterSite");
+    var CreatedBy = usersDB.QuerySingle("SELECT Email FROM UserProfile WHERE UserId = @0", currentProduct.fk_CreatedBy).Email;
+    var UpdatedBy = "";
+
+    if (currentProduct.fk_UpdatedBy != null){
+        UpdatedBy = usersDB.QuerySingle("SELECT Email FROM UserProfile WHERE UserId = @0", currentProduct.fk_UpdatedBy).Email;
+    }
+
+
+    // Setup validation
+    Validation.RequireField("productName", "You must specify an product name.");
+    Validation.RequireField("productCategory", "You must specify a category.");
+    Validation.RequireField("productSubCategory", "You must specify a sub-category.");
+    Validation.RequireField("productCode", "You must specify a Product Code.");
+    Validation.RequireField("productPrice", "You must specify a price.");
+    Validation.RequireField("productShippingWeight", "You must specify a shipping weight.");
+    Validation.RequireField("productURLName", "You must specify a URL name. (The name of the folder in which the images will exist)");
+    Validation.RequireField("productIMGPath", "You must specify a IMG Path. (The base location in which your folders for products are stored)");
+
+    if (IsPost && Validation.IsValid()) {
+        var productID = Request["productID"];
+        var name = Request["productName"];
+        var description = Request["productDescription"];
+        var category = Request["productCategory"];
+        var subCategory = Request["productSubCategory"];
+        var code = Request["productCode"];
+        var qty = Request["productQty"];
+        var price = Request["productPrice"];
+        var overallLength = Request["productOverallLength"];
+        var bladeLength = Request["productBladeLength"];
+        var bladeLength2 = Request["productBladeLength2"];
+        var bladeLength3 = Request["productBladeLength3"];
+        var shippingWeight = Request["productShippingWeight"];
+        var timeReq = Request["productTimeRequired"];
+        var unitsOnOrder = Request["productUnitsOnOrder"];
+        var canModify = Request["productCanModify"] == "on" ? true : false;
+        var discontinued = Request["productDiscontinued"] == "on" ? true : false;
+        var urlName= Request["productURLName"];
+        var imgPath = Request["productIMGPath"];
+        var userID = Request["productUserID"];
+        var dateCreated = Request["productDateCreated"];
+
+
+        
+        try {
+            var db2 = Database.Open("Sabersmith");
+            string sql = "Execute sp_modifyProduct @0, @1, @2, @3, @4, @5, @6, @7, @8, @9, @10, @11, @12, @13, @14, @15, @16, @17, @18, @19";
+            db2.Execute(sql, productID, category, subCategory, code, name, description, overallLength, bladeLength, bladeLength2, bladeLength3, shippingWeight, canModify, qty, price, timeReq, unitsOnOrder, discontinued, urlName, imgPath, WebSecurity.CurrentUserId);
+            db2.Close();
+            
+            Response.Redirect("~/admin/manageproducts?Changed=true");
+        } catch {
+            ModelState.AddFormError("There was an error and the new product could not be processed at this time.");
+        }
+
+    }
+}
+
+
+<form id="modify-product" action="" method="post">
+    @Html.ValidationSummary(excludeFieldErrors: true)
+
+        <h2>Add Product</h2>
+
+        <ul class="orderPageList" data-role="listview">
+
+            <li class="name">
+                <div class="fieldcontainer" data-role="fieldcontain">
+                    <label for="productName">Name</label>
+                    <input type="text" id="productName" class="productField" name="productName" value="@currentProduct.ProductName" @Validation.For("productName") tabindex="0" />
+                    <div>@Html.ValidationMessage("productName")</div>
+                </div>
+            </li>
+
+            <li class="description">
+                <div class="fieldcontainer" data-role="fieldcontain">
+                    <label for="productDescription">Description</label>
+                    <textarea id="productDescription" class="productField" name="productDescription">@currentProduct.ProductDesc</textarea>
+                </div>
+            </li>
+
+            <li class="category">
+                <div class="fieldcontainer" data-role="fieldcontain">
+                    <label for="productCategory">Category</label>
+                    <select id="productCategory" class="productField" name="productCategory" @Validation.For("productCategory")>
+                        @foreach(var row in db.Query(categories)){
+                            <option value="@row.pk_CategoryID"
+                            @if (currentCategory == @row.pk_CategoryID){<text>selected</text>}
+                            >@row.CategoryName</option>
+                        }
+                    </select>
+                    <div>@Html.ValidationMessage("productCategory")</div>
+                </div>
+            </li>
+
+            <li class="subCategory">
+                <div class="fieldcontainer" data-role="fieldcontain">
+                    <label for="productSubCategory">Sub-Category</label>
+                    <select id="productSubCategory" class="productField" name="productSubCategory" @Validation.For("productSubCategory")>
+                        <!-- (at)/*foreach(var row in db.Query(sub_categories)){
+                            <option value="(at)row.pk_SubCategoryID"
+                            (at)if (currentSubCategory == (at)row.pk_SubCategoryID){<text>selected</text>}
+                            >(at)row.SubCategoryName</option>
+                        */} -->
+                    </select>
+                    <div>@Html.ValidationMessage("productSubCategory")</div>
+                </div>
+            </li>
+
+            <li class="code">
+                <div class="fieldcontainer" data-role="fieldcontain">
+                    <label for="productCode">Product Code *</label>
+                    <input type="text" id="productCode" class="productField" name="productCode" value="@string.Format("{0:f}", currentProduct.ProductCode)" @Validation.For("productCode")
+                           title="Product Code used in your systems. Use NA or your preference for products with no code." />
+                    <div>@Html.ValidationMessage("productCode")</div>
+                </div>
+            </li>
+
+            <li class="qty">
+                <div class="fieldcontainer" data-role="fieldcontain">
+                    <label for="productQty">Qty/Unit</label>
+                    <input type="text" id="productQty" class="productField" name="productQty" value="@currentProduct.QtyPerUnit" 
+                        title="Quantity of items per order. (Such as 3-pack of kunai)" />
+                </div>
+            </li>
+
+            <li class="price">
+                <div class="fieldcontainer" data-role="fieldcontain">
+                    <label for="productPrice">Price</label>
+                    <input type="text" id="productPrice" class="productField" name="productPrice" value="@string.Format("{0:f}", currentProduct.UnitPrice)" @Validation.For("productPrice") />
+                    <div>@Html.ValidationMessage("productPrice")</div>
+                </div>
+            </li>
+
+            <li class="overallLength">
+                <div class="fieldcontainer" data-role="fieldcontain">
+                    <label for="productOverallLength">Overall Length</label>
+                    <input type="text" id="productOverallLength" class="productField" name="productOverallLength" value="@currentProduct.OverallLength" 
+                        title="(Optional) Overall length of product (in inches)." />
+                </div>
+            </li>
+
+            <li class="bladeLength">
+                <div class="fieldcontainer" data-role="fieldcontain">
+                    <label for="productBladeLength">Blade Length</label>
+                    <input type="text" id="productBladeLength" class="productField" name="productBladeLength" value="@currentProduct.BladeLength" 
+                        title="(Optional) Length of blade (in inches), if product is a weapon." />
+                </div>
+            </li>
+
+            <li class="bladeLength2">
+                <div class="fieldcontainer" data-role="fieldcontain">
+                    <label for="productBladeLength2">Secondary Blade Length</label>
+                    <input type="text" id="productBladeLength2" class="productField" name="productBladeLength2" value="@currentProduct.SecondaryBladeLength" 
+                        title="(Optional) Length of secondary blade (in inches), if product is a weapon." />
+                </div>
+            </li>
+
+            <li class="bladeLength3">
+                <div class="fieldcontainer" data-role="fieldcontain">
+                    <label for="productBladeLength3">Tertiary Blade Length</label>
+                    <input type="text" id="productBladeLength3" class="productField" name="productBladeLength3" value="@currentProduct.TertiaryBladeLength" 
+                        title="(Optional) Length of tertiary blade (in inches), if product is a weapon."/>
+                </div>
+            </li>
+
+            <li class="shippingWeight">
+                <div class="fieldcontainer" data-role="fieldcontain">
+                    <label for="productShippingWeight">Shipping Weight</label>
+                    <input type="text" id="productShippingWeight" class="productField" name="productShippingWeight" value="@currentProduct.ShippingWeight" @Validation.For("productShippingWeight") />
+                    <div>@Html.ValidationMessage("productShippingWeight")</div>
+                </div>
+            </li>
+
+            <li class="timeRequired">
+                <div class="fieldcontainer" data-role="fieldcontain">
+                    <label for="productTimeRequired">Manufacture Time (in hrs)</label>
+                    <input type="text" id="productTimeRequired" class="productField" name="productTimeRequired" value="@currentProduct.TimeReq" 
+                        title="(Optional) The approximate time it takes to product the item, in hours. (max 255)" />
+                </div>
+            </li>
+
+            <li class="unitsOnOrder">
+                <div class="fieldcontainer" data-role="fieldcontain">
+                    <label for="productUnitsOnOrder">Units On Order</label>
+                    <input type="text" id="productUnitsOnOrder" class="productField" name="productUnitsOnOrder" value="@currentProduct.UnitsOnOrder") 
+                        title="(Optional) Number of units currently on order." />
+                </div>
+            </li>
+
+            <li class="canModify">
+                <div class="fieldcontainer" data-role="fieldcontain">
+                    <label for="productCanModify">Can Modify:</label>
+                    <input type="checkbox" id="productCanModify" class="productField" name="productCanModify" @if(currentProduct.CanModify){<text>checked</text>} 
+                        title="Whether or not the product has modifications available (e.g. grip types, etc.)" />
+                </div>
+            </li>
+
+            <li class="discontinued">
+                <div class="fieldcontainer" data-role="fieldcontain">
+                    <label for="productDiscontinued">Discontinued: </label>
+                    <input type="checkbox" id="productDiscontinued" class="productField" name="productDiscontinued" @if(currentProduct.Discontinued){<text>checked</text>} 
+                        title="Items no longer produced should be discontinued rather than deleted for future order tracking." />
+                </div>
+            </li>
+
+            <li class="urlName">
+                <div class="fieldcontainer" data-role="fieldcontain">
+                    <label for="productURLName">URL Name</label>
+                    <input type="text" id="productURLName" class="productField" name="productURLName" value="@currentProduct.URLName" @Validation.For("productURLName")
+                           title="The name used by the browser, which should not have any spaces. (This will also be the folder name you will create/add images to
+                           for the site to recognize. For example, if your IMGPath is /products/images, and your URLName is axehilt, the website will look in
+                           /products/images/axehilt/ for the images it needs to use)" />
+                    <div>@Html.ValidationMessage("productURLName")</div>
+                </div>
+            </li>
+
+            <li class="imgPath">
+                <div class="fieldcontainer" data-role="fieldcontain">
+                    <label for="productURLName">IMG Path</label>
+                    <input type="text" id="productIMGPath" class="productField" name="productIMGPath" value="@currentProduct.IMGPath"
+                        title="The base location in which your folders for products are stored, excluding the final folder's '/'. (e.g. /products/images)" />
+                    <div>@Html.ValidationMessage("productIMGPath")</div>
+                </div>
+            </li>
+        </ul>
+        
+
+        @{
+            <div><strong>Created By:</strong> @CreatedBy <small>(@currentProduct.DateCreated)</small></div>
+            if (currentProduct.fk_UpdatedBy != null){
+                <text>
+                    <div><strong>Updated By:</strong> @UpdatedBy <small>(@currentProduct.DateUpdated)</small></div>
+                </text>
+            }
+        }
+
+        <input type="hidden" id="productID" name="productID" value="@currentProduct.pk_ProductID" />
+        <input type="hidden" id="productCreatedBy" name="productCreatedBy" value="@currentProduct.fk_CreatedBy" />
+        <input type="hidden" id="productDateCreated" name="productDateCreated" value="@currentProduct.DateCreated" />
+        <input type="hidden" id="productUpdatedBy" name="productUpdatedBy" value="@currentProduct.fk_UpdatedBy" />
+        <input type="hidden" id="productDateUpdated" name="productDateUpdated" value="@currentProduct.DateUpdated" />
+
+        <p class="actions">
+            <input type="submit" value="Save Changes" data-role="none" data-inline="true"/>
+            <button formaction="~/admin/manageproducts">Cancel</button>
+        </p>
+
+</form>
